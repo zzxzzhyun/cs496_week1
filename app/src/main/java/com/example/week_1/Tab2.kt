@@ -1,10 +1,15 @@
 package com.example.week_1
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.GridView
+import android.widget.ListView
+import org.json.JSONArray
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,8 +38,24 @@ class Tab2 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab2, container, false)
+        val root: View = inflater.inflate(R.layout.fragment_tab2, container, false)
+
+
+        val context = context as MainActivity
+
+        val adapter = ImageAdapter(context)
+
+        val girdView: GridView = root.findViewById(R.id.list_item)
+        girdView.adapter = adapter
+
+        girdView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(context, FullImageActivity::class.java).apply{
+                putExtra("id",id.toInt())
+            }
+            startActivity(intent)
+        }
+
+        return root
     }
 
     companion object {

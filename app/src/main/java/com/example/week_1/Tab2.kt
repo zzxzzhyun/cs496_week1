@@ -50,7 +50,7 @@ class Tab2 : Fragment() {
 
         girdView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(context, FullImageActivity::class.java).apply{
-                putExtra("id",id.toInt())
+                putExtra("id",position)
             }
             startActivity(intent)
         }

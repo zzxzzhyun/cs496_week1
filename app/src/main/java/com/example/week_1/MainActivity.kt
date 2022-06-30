@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     tab.text = "Gallery"
                     tab.setIcon(R.drawable.ic_launcher_background)}
                 2-> {
-                    tab.text = "3"
+                    tab.text = "32"
                     tab.setIcon(R.drawable.ic_launcher_background)
                 }
             }

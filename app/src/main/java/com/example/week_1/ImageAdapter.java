@@ -11,9 +11,9 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
 
     public Integer[] images = {
-            R.drawable.beach4, R.drawable.beach4,
-            R.drawable.beach4, R.drawable.beach4,
-            R.drawable.beach4, R.drawable.beach4
+            R.mipmap.beach4, R.mipmap.beach4,
+//            R.drawable.beach4, R.drawable.beach4,
+//            R.drawable.beach4, R.drawable.beach4
     };
 
     public ImageAdapter(Context c) {

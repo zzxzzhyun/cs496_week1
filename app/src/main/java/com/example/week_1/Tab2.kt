@@ -45,7 +45,7 @@ class Tab2 : Fragment() {
 
         val adapter = ImageAdapter(context)
 
-        val girdView: GridView = root.findViewById(R.id.list_item)
+        val girdView: GridView = root.findViewById(R.id.gridView)
         girdView.adapter = adapter
 
         girdView.setOnItemClickListener { parent, view, position, id ->

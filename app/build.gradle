@@ -5,7 +5,9 @@ plugins {
 
 android {
     compileSdk 32
-    buildFeatures.viewBinding true
+    buildFeatures {
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.week_1"
         minSdk 21

@@ -43,8 +43,8 @@ class Tab1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
-        //_binding = inflater.inflate(inflater, container, false)
-        //val root: View = binding.root
+//        _binding = inflater.inflate(inflater, container, false)
+//        val root: View = binding.root
 
         val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)

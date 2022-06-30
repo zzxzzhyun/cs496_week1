@@ -23,13 +23,13 @@ class MainActivity : AppCompatActivity() {
             when (position) {
                 0-> {
                     tab.text = "Contact"
-                    tab.setIcon(R.drawable.ic_launcher_background)}
+                    tab.setIcon(R.drawable.ic_baseline_people)}
                 1-> {
                     tab.text = "Gallery"
-                    tab.setIcon(R.drawable.ic_launcher_background)}
+                    tab.setIcon(R.drawable.ic_baseline_image)}
                 2-> {
                     tab.text = "32"
-                    tab.setIcon(R.drawable.ic_launcher_background)
+                    tab.setIcon(R.drawable.ic_baseline_image)
                 }
             }
         }.attach()

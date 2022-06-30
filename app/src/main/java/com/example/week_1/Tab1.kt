@@ -59,13 +59,13 @@ class Tab1 : Fragment() {
         val listView: ListView = root.findViewById(R.id.list_item)
         listView.adapter = adapter
 
-/*
+
         listView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(context, PhoneNumberActivity::class.java).apply{
                 putExtra("id",id.toInt())
             }
             startActivity(intent)
-        }*/
+        }
 
         return root
 

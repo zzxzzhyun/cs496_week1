@@ -1,10 +1,15 @@
 package com.example.week_1
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import org.json.JSONArray
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +25,10 @@ class Tab1 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var array = arrayOf<String>()
+    //private var _binding: FragmentTab1Binding? = null
+
+    //private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +42,33 @@ class Tab1 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab1, container, false)
+        val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
+        //_binding = inflater.inflate(inflater, container, false)
+        //val root: View = binding.root
+
+        val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
+        val jsonarray = JSONArray(jsonString)
+        for (i in 0 until jsonarray.length()){
+            val person = jsonarray.getJSONObject(i)
+            array = array.plus(person.getString("Display Name"))
+        }
+        val context = context as MainActivity
+
+        val adapter = ArrayAdapter(context, R.layout.listview_item,array)
+
+        val listView: ListView = root.findViewById(R.id.list_item)
+        listView.adapter = adapter
+
+/*
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(context, PhoneNumberActivity::class.java).apply{
+                putExtra("id",id.toInt())
+            }
+            startActivity(intent)
+        }*/
+
+        return root
+
     }
 
     companion object {

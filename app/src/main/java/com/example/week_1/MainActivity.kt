@@ -22,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             when (position) {
                 0-> {
-                    tab.text = "Contacts"
+                    tab.text = "Contact"
                     tab.setIcon(R.drawable.ic_launcher_background)}
                 1-> {
-                    tab.text = "Contacts"
+                    tab.text = "Gallery"
                     tab.setIcon(R.drawable.ic_launcher_background)}
                 2-> {
                     tab.text = "3"

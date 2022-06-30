@@ -22,10 +22,13 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Tab1 : Fragment() {
+    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     var array = arrayOf<String>()
+    //private var _binding: FragmentTab1Binding? = null
 
+    //private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,8 @@ class Tab1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
+        //_binding = inflater.inflate(inflater, container, false)
+        //val root: View = binding.root
 
         val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)
@@ -53,6 +58,7 @@ class Tab1 : Fragment() {
 
         val listView: ListView = root.findViewById(R.id.list_item)
         listView.adapter = adapter
+
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(context, PhoneNumberActivity::class.java).apply{

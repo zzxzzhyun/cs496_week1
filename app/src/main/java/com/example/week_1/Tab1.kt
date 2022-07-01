@@ -2,11 +2,11 @@ package com.example.week_1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import org.json.JSONArray
 
@@ -25,9 +25,8 @@ class Tab1 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var array = arrayOf<String>()
+    var array = mutableListOf<ListViewItem>()
     //private var _binding: FragmentTab1Binding? = null
-
     //private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,22 +42,17 @@ class Tab1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
-//        _binding = inflater.inflate(inflater, container, false)
-//        val root: View = binding.root
-
         val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)
         for (i in 0 until jsonarray.length()){
             val person = jsonarray.getJSONObject(i)
-            array = array.plus(person.getString("Display Name"))
+            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getString("Info"), person.getJSONArray("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
         }
-        val context = context as MainActivity
-
-        val adapter = ArrayAdapter(context, R.layout.listview_item,array)
-
+//        array.forEach{ println(it)}
         val listView: ListView = root.findViewById(R.id.list_item)
-        listView.adapter = adapter
 
+        val adapter = ListViewAdapter(array)
+        listView.adapter = adapter
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(context, PhoneNumberActivity::class.java).apply{

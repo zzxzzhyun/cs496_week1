@@ -2,8 +2,12 @@ package com.example.week_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import com.example.week_1.databinding.ActivityMainBinding
+import com.example.week_1.databinding.FragmentMyBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
@@ -37,4 +41,6 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
+
+
 }

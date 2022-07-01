@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ListView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +27,7 @@ class Tab2 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var lstFood = listOf<Food>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,8 @@ class Tab2 : Fragment() {
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab2, container, false)
 
-
+        // gridview code
+        /*
         val context = context as MainActivity
 
         val adapter = ImageAdapter(context)
@@ -54,6 +58,37 @@ class Tab2 : Fragment() {
             }
             startActivity(intent)
         }
+        */
+
+        //cardview code
+
+        lstFood = lstFood.plus(Food("one", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("two", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("three", "cat", R.mipmap.beach3))
+        lstFood = lstFood.plus(Food("four", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("five", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("one", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("two", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("three", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("four", "cat", R.mipmap.beach3))
+        lstFood = lstFood.plus(Food("five", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("one", "cat", R.mipmap.beach3))
+        lstFood = lstFood.plus(Food("two", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("three", "cat", R.mipmap.beach3))
+        lstFood = lstFood.plus(Food("four", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("five", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("one", "cat", R.mipmap.beach2))
+        lstFood = lstFood.plus(Food("two", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("three", "cat", R.mipmap.beach4))
+        lstFood = lstFood.plus(Food("four", "cat", R.mipmap.beach3))
+        lstFood = lstFood.plus(Food("five", "cat", R.mipmap.beach4))
+
+        val myrv: RecyclerView = root.findViewById(R.id.recyclerview_id)
+        val myAdapter = RecyclerViewAdapter(context,lstFood)
+        myrv.layoutManager = GridLayoutManager(context, 3)
+        myrv.adapter = myAdapter
+
+
 
         return root
     }

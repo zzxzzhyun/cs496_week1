@@ -35,3 +35,17 @@ possible ideas for third tab
 - map
 - calendar
 - random generator for choosing menu
+
+
+
+## Jul 1
+today's accomplishment
+- finished contacts tab layout 
+- gallery tab implemented with recyclerview and cardview
+- gallery tab merged to master branch
+- attempt to implement map api
+
+things to do
+- add functions to map 
+- refine gallery tab layout and find food images
+- add button to contacts page

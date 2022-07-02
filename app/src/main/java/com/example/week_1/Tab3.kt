@@ -1,21 +1,21 @@
 package com.example.week_1
 
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.week_1.databinding.FragmentTab3Binding
+import androidx.fragment.app.Fragment
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
+import com.naver.maps.map.NaverMap.OnMapClickListener
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
-import org.json.JSONArray
+import com.naver.maps.map.util.MarkerIcons
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +31,10 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val marker = Marker()
+    private val marker1 = Marker()
+    private val marker2 = Marker()
 
     private lateinit var mainActivity: MainActivity
     private lateinit var mapView: MapView
@@ -52,7 +56,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             param2 = it.getString(ARG_PARAM2)
         }
         locationSource = FusedLocationSource(this, LOCATION_PERMISSTION_REQUEST_CODE)
-
     }
 
     override fun onCreateView(
@@ -74,8 +77,54 @@ class Tab3 : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(@NonNull naverMap: NaverMap) {
         this.naverMap = naverMap
+
+        val uiSettings: UiSettings = naverMap.getUiSettings()
+        uiSettings.setLocationButtonEnabled(true)
+
         naverMap.locationSource = locationSource
-        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        naverMap.locationTrackingMode = LocationTrackingMode.Face
+
+        marker.position = LatLng(37.6281, 127.0905)
+        marker.map = naverMap
+        marker.icon = MarkerIcons.BLACK // 마커 검은색으로
+        marker.iconTintColor = Color.RED // 현재위치 마커 빨간색으로
+        marker1.position = LatLng(37.62444907132257, 127.09321109051345)
+        marker1.map = naverMap
+        marker1.captionText = "화랑대 철도공원"
+        marker2.position = LatLng(37.608990485010956, 127.0703518565252)
+        marker2.map = naverMap // 고씨네
+        marker2.captionText = "중랑천 산책로"
+
+        naverMap.addOnLocationChangeListener { location ->
+//            Toast.makeText(mainActivity, "${location.latitude}, ${location.longitude}",
+//                Toast.LENGTH_SHORT).show()
+        }
+
+        naverMap.onMapClickListener =
+            OnMapClickListener { pointF, latLng ->
+                val latitude = latLng.latitude
+                val logitude = latLng.longitude
+                val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, logitude))
+                naverMap.moveCamera(cameraUpdate)
+                Log.w("tag", "@@@@@@ latitude $latitude")
+                Log.w("tag", "@@@@@@ logitude $logitude")
+            }
+
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.5666102, 126.9783881))
+        naverMap.moveCamera(cameraUpdate)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) {
+        if (locationSource.onRequestPermissionsResult(requestCode, permissions,
+                grantResults)) {
+            if (!locationSource.isActivated) { // 권한 거부됨
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            }
+            return
+        }
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onStart() {
@@ -130,5 +179,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }

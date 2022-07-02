@@ -1,14 +1,13 @@
 package com.example.week_1
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.example.week_1.databinding.ActivityMainBinding
-import com.example.week_1.databinding.FragmentMyBinding
 import com.google.android.material.tabs.TabLayoutMediator
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +26,9 @@ class MainActivity : AppCompatActivity() {
             when (position) {
                 0-> {
                     tab.text = "Contact"
-                    binding.textView.text = "Contact"
                     tab.setIcon(R.drawable.ic_baseline_people)}
                 1-> {
                     tab.text = "Gallery"
-                    binding.textView.text = "Gallery"
                     tab.setIcon(R.drawable.ic_baseline_image)}
                 2-> {
                     tab.text = "32"
@@ -40,7 +37,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
-    }
 
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0-> {
+                    binding.textView.text = "Contact"
+                    binding.viewPager.isUserInputEnabled = true;
+                    }
+                    1-> {
+                    binding.textView.text = "Gallery"
+                    binding.viewPager.isUserInputEnabled = true;
+                    }
+                    2-> {
+                    binding.textView.text = "4"
+                    binding.viewPager.isUserInputEnabled = false;
+                    }
+                }
+
+            }
+        })
+    }
 
 }

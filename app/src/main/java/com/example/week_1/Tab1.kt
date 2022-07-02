@@ -1,12 +1,17 @@
 package com.example.week_1
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -28,9 +33,11 @@ class Tab1 : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var array = mutableListOf<ListViewItem>()
+    private val WRITE_CONTACT_PERMISSION_CODE = 100
+
     //private var _binding: FragmentTab1Binding? = null
     //private val binding get() = _binding!!
-
+    private var contactPermissions = Array<String>(5){""}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -67,15 +74,9 @@ class Tab1 : Fragment() {
 
         val button: Button = root.findViewById(R.id.button_id)
         button.setOnClickListener {
-            val intent = Intent(context, AddContactsActivity::class.java)
-            startActivity(intent)
-            val newname = intent.getStringExtra("Name").toString()
-            val newnickname = intent.getStringExtra("Nickname").toString()
-            val newnumber = intent.getStringExtra("Phone").toString()
-            val newemail = intent.getStringExtra("Email").toString()
-            val newfood = intent.getStringExtra("Food").toString()
+        val intent = Intent(context, AddContactsActivity::class.java)
+        startActivity(intent)
 
-            println(newnickname)
         }
         return root
 

@@ -19,7 +19,6 @@ class PhoneNumberActivity : AppCompatActivity() {
         binding = ActivityPhoneNumberBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_phone_number)
 
-//        val textView: TextView = findViewById(R.id.numberView)
         val name: TextView = findViewById(R.id.userNameDetail)
         val nickname: TextView = findViewById(R.id.userNicknameDetail)
         val phone: TextView = findViewById(R.id.userPhoneDetail)

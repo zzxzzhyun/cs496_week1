@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.GridView
 import android.widget.ListView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -87,8 +88,6 @@ class Tab2 : Fragment() {
         val myAdapter = RecyclerViewAdapter(context,lstFood)
         myrv.layoutManager = GridLayoutManager(context, 3)
         myrv.adapter = myAdapter
-
-
 
         return root
     }

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ListView
 import org.json.JSONArray
 
@@ -58,6 +59,12 @@ class Tab1 : Fragment() {
             val intent = Intent(context, PhoneNumberActivity::class.java).apply{
                 putExtra("id",id.toInt())
             }
+            startActivity(intent)
+        }
+
+        val button: Button = root.findViewById(R.id.button_id)
+        button.setOnClickListener {
+            val intent = Intent(context, AddContactsActivity::class.java)
             startActivity(intent)
         }
 

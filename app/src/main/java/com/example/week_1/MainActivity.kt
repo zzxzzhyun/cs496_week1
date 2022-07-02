@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
                 0-> {
                     tab.text = "Contact"
                     binding.textView.text = "Contact"
-                    tab.setIcon(R.drawable.ic_baseline_people)}
+                    tab.setIcon(R.drawable.ic_baseline_people)
+                }
                 1-> {
                     tab.text = "Gallery"
                     binding.textView.text = "Gallery"

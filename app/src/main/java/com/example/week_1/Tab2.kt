@@ -44,23 +44,6 @@ class Tab2 : Fragment() {
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab2, container, false)
 
-        // gridview code
-        /*
-        val context = context as MainActivity
-
-        val adapter = ImageAdapter(context)
-
-        val girdView: GridView = root.findViewById(R.id.gridView)
-        girdView.adapter = adapter
-
-        girdView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(context, FullImageActivity::class.java).apply{
-                putExtra("id",position)
-            }
-            startActivity(intent)
-        }
-        */
-
         //cardview code
 
         lstFood = lstFood.plus(Food("one", "cat", R.mipmap.beach2))

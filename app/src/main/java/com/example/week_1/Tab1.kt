@@ -2,13 +2,14 @@ package com.example.week_1
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import org.json.JSONArray
 
 
@@ -36,6 +37,7 @@ class Tab1 : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
@@ -43,13 +45,14 @@ class Tab1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
+
         val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)
         for (i in 0 until jsonarray.length()){
             val person = jsonarray.getJSONObject(i)
-            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getString("Info"), person.getJSONArray("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
+            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getJSONArray("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
         }
-//        array.forEach{ println(it)}
+
         val listView: ListView = root.findViewById(R.id.list_item)
 
         val adapter = ListViewAdapter(array)
@@ -66,8 +69,14 @@ class Tab1 : Fragment() {
         button.setOnClickListener {
             val intent = Intent(context, AddContactsActivity::class.java)
             startActivity(intent)
-        }
+            val newname = intent.getStringExtra("Name").toString()
+            val newnickname = intent.getStringExtra("Nickname").toString()
+            val newnumber = intent.getStringExtra("Phone").toString()
+            val newemail = intent.getStringExtra("Email").toString()
+            val newfood = intent.getStringExtra("Food").toString()
 
+            println(newnickname)
+        }
         return root
 
     }

@@ -5,9 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".Tab3">
 
-    <fragment android:layout_width="match_parent"
-        android:layout_height="match_parent"
+<!--    <ListView-->
+<!--        android:id="@+id/tab3_list_item"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:drawSelectorOnTop="false">-->
+<!--    </ListView>-->
+<!--    <fragment android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/map"-->
+<!--        android:name="com.naver.maps.map.MapFragment" />-->
+
+    <com.naver.maps.map.MapView
         android:id="@+id/map"
-        android:name="com.naver.maps.map.MapFragment" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

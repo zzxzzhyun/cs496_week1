@@ -88,8 +88,6 @@ class Tab2 : Fragment() {
         myrv.layoutManager = GridLayoutManager(context, 3)
         myrv.adapter = myAdapter
 
-
-
         return root
     }
 

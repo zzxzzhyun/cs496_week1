@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                     tab.text = "Gallery"
                     binding.textView.text = "Gallery"
                     tab.setIcon(R.drawable.ic_baseline_image)}
+
                 2-> {
                     tab.text = "32"
                     binding.textView.text = "4"

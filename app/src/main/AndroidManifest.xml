@@ -17,9 +17,6 @@
             android:name=".FoodActivity"
             android:exported="false" />
         <activity
-            android:name=".FullImageActivity"
-            android:exported="false" />
-        <activity
             android:name=".PhoneNumberActivity"
             android:exported="false" />
         <activity

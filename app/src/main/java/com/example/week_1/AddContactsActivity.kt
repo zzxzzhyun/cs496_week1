@@ -12,6 +12,7 @@ import android.content.ContentProviderOperation
 import android.content.ContentProviderResult
 import android.content.pm.PackageManager
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -28,14 +29,13 @@ class AddContactsActivity : AppCompatActivity() {
         setContentView(binding.root)
         contactPermissions = arrayOf(Manifest.permission.WRITE_CONTACTS)
 
-        if (isWriteContactPermissionEnabled()){
-            saveContact()
-        }
-        else{
-            requestWriteContactPermission()
-        }
-
         binding.doneButton.setOnClickListener {
+            if (isWriteContactPermissionEnabled()){
+                saveContact()
+            }
+            else{
+                requestWriteContactPermission()
+            }
             val intent = Intent(this, MainActivity::class.java)
             this.startActivity(intent)
         }
@@ -48,9 +48,21 @@ class AddContactsActivity : AppCompatActivity() {
         val email = binding.addEmail.text.toString()
         val food = binding.addFood.text.toString()
 
-        val cpo = ArrayList<ContentProviderOperation>()
+        val intent = Intent(Intent.ACTION_INSERT)
+        intent.setType(ContactsContract.RawContacts.CONTENT_TYPE)
+        intent.putExtra(ContactsContract.Intents.Insert.NAME, name)
+        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email)
+        intent.putExtra(ContactsContract.Intents.Insert.PHONE, food)
+
+        if (intent.resolveActivity(packageManager)!=null){
+            startActivity(intent)
+        }else{
+            Log.d(TAG, "saveContact: failed")
+        }
+/*
+        var cpo = ArrayList<ContentProviderOperation>()
         // contact id
-        val rawContactId: Int = cpo.size
+        var rawContactId: Int = cpo.size
         cpo.add(ContentProviderOperation.newInsert(
             ContactsContract.RawContacts.CONTENT_URI)
             .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
@@ -94,11 +106,11 @@ class AddContactsActivity : AppCompatActivity() {
             .build())
 
         //save contact
-        try{
-            this.contentResolver.applyBatch(ContactsContract.AUTHORITY, cpo)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+
+        this.contentResolver.applyBatch(ContactsContract.AUTHORITY, cpo)
+        Log.d(TAG, "saveContact: Saved")
+
+*/
 
     }
 

@@ -16,7 +16,7 @@
         android:drawSelectorOnTop="false">
     </ListView>
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_id"
         android:layout_width="39dp"
         android:layout_height="39dp"

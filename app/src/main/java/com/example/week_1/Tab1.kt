@@ -5,39 +5,41 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Tab1.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Tab1 : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var array = mutableListOf<ListViewItem>()
-    private val WRITE_CONTACT_PERMISSION_CODE = 100
+    var searchText = ""
+    var sortText = "asc"
 
-    //private var _binding: FragmentTab1Binding? = null
-    //private val binding get() = _binding!!
-    private var contactPermissions = Array<String>(5){""}
+    private lateinit var homeViewModel: Tab1ViewModel
+    private lateinit var root : View
+    lateinit var phones : ListView
+    lateinit var initInflater : LayoutInflater
+    var initContainer : ViewGroup? = null
+    var initSavedInstanceState : Bundle? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,35 +53,50 @@ class Tab1 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root: View = inflater.inflate(R.layout.fragment_tab1, container, false)
-
-        val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
-        val jsonarray = JSONArray(jsonString)
-        for (i in 0 until jsonarray.length()){
-            val person = jsonarray.getJSONObject(i)
-            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getJSONArray("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
+        initInflater = inflater
+        if (container != null) {
+            initContainer = container
+        }
+        if (savedInstanceState != null) {
+            initSavedInstanceState = savedInstanceState
         }
 
-        val listView: ListView = root.findViewById(R.id.list_item)
+        homeViewModel =
+            ViewModelProvider(this).get(Tab1ViewModel::class.java)
+        root = inflater.inflate(R.layout.fragment_tab1, container, false)
 
-        val adapter = ListViewAdapter(array)
-        listView.adapter = adapter
+        //setList()
+        //phones = root.findViewById(R.id.list_item)
+        //val adapter = ListViewAdapter()
+        //homeViewModel.setList(sortText, searchText)
 
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(context, PhoneNumberActivity::class.java).apply{
-                putExtra("id",id.toInt())
+
+        //setAddButtonListener()
+        val addButton : FloatingActionButton = root.findViewById(R.id.button_id)
+        addButton.setOnClickListener {
+            val addButtonIntent = Intent(context, AddContactsActivity::class.java)
+            startActivityForResult(addButtonIntent,10001)
+        }
+
+        /*
+        homeViewModel.allNumbers.observe(viewLifecycleOwner
+        ) {
+            it?.let {
+                adapter.data = it
             }
-            startActivity(intent)
         }
+        phones.adapter = adapter
+        phones.layoutManager = LinearLayoutManager(context)*/
 
-        val button: Button = root.findViewById(R.id.button_id)
-        button.setOnClickListener {
-        val intent = Intent(context, AddContactsActivity::class.java)
-        startActivity(intent)
-
-        }
         return root
 
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == 10001) && (resultCode == Activity.RESULT_OK)) {
+            onCreateView(initInflater, initContainer, initSavedInstanceState)
+        }
     }
 
     companion object {
@@ -101,4 +118,5 @@ class Tab1 : Fragment() {
                 }
             }
     }
+
 }

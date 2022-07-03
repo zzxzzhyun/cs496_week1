@@ -1,145 +1,75 @@
 package com.example.week_1
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.week_1.databinding.ActivityAddContactsBinding
-import com.example.week_1.databinding.ActivityMainBinding
-import com.example.week_1.databinding.FragmentMyBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.Manifest
+import android.app.Activity
 import android.content.ContentProviderOperation
-import android.content.ContentProviderResult
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.week_1.databinding.ActivityAddContactsBinding
+
 
 class AddContactsActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityAddContactsBinding
-    private val TAG = "CONTACT_ADD_TAG"
-    private val WRITE_CONTACT_PERMISSION_CODE = 100
-    private var contactPermissions = Array<String>(5){""}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddContactsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        contactPermissions = arrayOf(Manifest.permission.WRITE_CONTACTS)
+        setContentView(R.layout.activity_add_contacts)
 
-        binding.doneButton.setOnClickListener {
-            if (isWriteContactPermissionEnabled()){
-                saveContact()
+        var createButtonName = findViewById(R.id.add_name) as EditText
+        var createButtonNumber = findViewById(R.id.add_number) as EditText
+        var createPhoneButton = findViewById(R.id.doneButton) as Button
+
+        createPhoneButton.setOnClickListener {
+            var name: String = createButtonName.text.toString()
+            var phoneNumber: String = createButtonNumber.text.toString()
+            if (name == "" || phoneNumber == "") {
+                Toast.makeText(this, "이름과 전화번호는 공백일 수 없습니다.", Toast.LENGTH_LONG).show()
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+                onResume()
             }
-            else{
-                requestWriteContactPermission()
-            }
-            val intent = Intent(this, MainActivity::class.java)
-            this.startActivity(intent)
-        }
-    }
+            else {
+                var ops: ArrayList<ContentProviderOperation> = ArrayList<ContentProviderOperation>()
+                var op: ContentProviderOperation.Builder =
+                    ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                ops.add(op.build())
 
-    private fun saveContact(){
-        val name = binding.addName.text.toString()
-        val nickname = binding.addNickname.text.toString()
-        val phone = binding.addNumber.text.toString()
-        val email = binding.addEmail.text.toString()
-        val food = binding.addFood.text.toString()
+                op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(
+                        ContactsContract.Data.MIMETYPE,
+                        ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE
+                    )
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
+                ops.add(op.build())
 
-        val intent = Intent(Intent.ACTION_INSERT)
-        intent.setType(ContactsContract.RawContacts.CONTENT_TYPE)
-        intent.putExtra(ContactsContract.Intents.Insert.NAME, name)
-        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email)
-        intent.putExtra(ContactsContract.Intents.Insert.PHONE, food)
-
-        if (intent.resolveActivity(packageManager)!=null){
-            startActivity(intent)
-        }else{
-            Log.d(TAG, "saveContact: failed")
-        }
-/*
-        var cpo = ArrayList<ContentProviderOperation>()
-        // contact id
-        var rawContactId: Int = cpo.size
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-            .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-            .build())
-        // add name
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, rawContactId)
-            .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-            .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
-            .build())
-        // add nickname
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, rawContactId)
-            .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE)
-            .withValue(ContactsContract.CommonDataKinds.Nickname.NAME, nickname)
-            .build())
-        // add phone number (mobile)
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, rawContactId)
-            .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-            .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone)
-            .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-            .build())
-        // add email
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, rawContactId)
-            .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-            .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
-            .build())
-        // add food
-        cpo.add(ContentProviderOperation.newInsert(
-            ContactsContract.RawContacts.CONTENT_URI)
-            .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID, rawContactId)
-            .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE)
-            .withValue(ContactsContract.CommonDataKinds.Note.NOTE, food)
-            .build())
-
-        //save contact
-
-        this.contentResolver.applyBatch(ContactsContract.AUTHORITY, cpo)
-        Log.d(TAG, "saveContact: Saved")
-
-*/
-
-    }
-
-    private fun isWriteContactPermissionEnabled(): Boolean {
-        val result: Boolean = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CONTACTS) == (PackageManager.PERMISSION_GRANTED)
-        return result
-    }
-
-    private fun requestWriteContactPermission(){
-        ActivityCompat.requestPermissions(this, contactPermissions, WRITE_CONTACT_PERMISSION_CODE)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (grantResults.size > 0) {
-            if (requestCode == WRITE_CONTACT_PERMISSION_CODE) {
-                val haveWriteContactPermission: Boolean = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                if(haveWriteContactPermission) {
-                    saveContact()
-                }
+                op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(
+                        ContactsContract.Data.MIMETYPE,
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+                    )
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, "LABEL?")
+                    .withValue(
+                        ContactsContract.CommonDataKinds.Phone.TYPE,
+                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+                    )
+                ops.add(op.build())
+                this.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops)
+                Toast.makeText(this, "저장되었습니다", Toast.LENGTH_LONG).show()
+                setResult(Activity.RESULT_OK)
+                finish()
+                onResume()
             }
         }
-
     }
-
-
 }

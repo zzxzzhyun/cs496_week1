@@ -3,19 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_frame"
+    android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:gravity="bottom"
     app:umanoDragView="@id/slide_layout"
     app:umanoFadeColor="@android:color/transparent"
+    app:umanoParallaxOffset="100dp"
+    app:umanoPanelHeight="20dp"
+    app:umanoScrollableView="@id/tab3ListView"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/back_layout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="match_parent"
         android:background="#42A5F5">
 
         <com.naver.maps.map.MapView
@@ -29,6 +32,8 @@
         android:id="@+id/slide_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:backgroundTint="@color/blue"
         android:background="@drawable/shape">
 
         <ListView

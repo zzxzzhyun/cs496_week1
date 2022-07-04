@@ -23,7 +23,7 @@ class FoodActivity : AppCompatActivity() {
         val location = intent.getStringExtra("location")
         val lon = intent.getDoubleExtra("lon", 0.0)
         val lat = intent.getDoubleExtra("lat", 0.0)
-        val image: Int? = intent.extras?.getInt("Thumbnail")
+        val image: Int? = intent.extras?.getInt("pic1")
 
         val tvres: TextView =findViewById(R.id.txtRes)
         val tvcat: TextView = findViewById(R.id.txtCat)
@@ -35,20 +35,29 @@ class FoodActivity : AppCompatActivity() {
         tvloc.setText(location)
 
         if (image != null) {
-            binding.foodthumbnail.setImageResource(image)
+            img.setImageResource(image)
         }
 
         val button: Button = findViewById(R.id.mapButton)
-
+        val backBtn : Button = findViewById(R.id.back_button)
         button.setOnClickListener (View.OnClickListener(){
             val mIntent =
                 Intent(this, MainActivity::class.java).apply {
-                putExtra("lat", lat)
+
+                    putExtra("lat", lat)
                 putExtra("lon", lon)
-                    putExtra("res", restaurant)
+                putExtra("res", restaurant)
             }
             this.startActivity(mIntent)
 //            setResult(RESULT_OK, mIntent)
+            if(!isFinishing) finish()
+        })
+        backBtn.setOnClickListener(View.OnClickListener() {
+            val mIntent =
+                Intent(this, MainActivity::class.java).apply {
+                putExtra("back", true)
+                }
+            this.startActivity(mIntent)
             if(!isFinishing) finish()
         })
 

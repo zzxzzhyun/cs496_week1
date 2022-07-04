@@ -8,14 +8,14 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.43356643356643354" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_phone_number.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/cardview_item.xml" value="0.2532467532467532" />
+        <entry key="app/src/main/res/layout/cardview_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my.xml" value="0.16185410334346503" />
         <entry key="app/src/main/res/layout/fragment_tab1.xml" value="0.12409420289855072" />
         <entry key="app/src/main/res/layout/fragment_tab2.xml" value="0.12409420289855072" />
-        <entry key="app/src/main/res/layout/fragment_tab3.xml" value="0.13518518518518519" />
+        <entry key="app/src/main/res/layout/fragment_tab3.xml" value="0.1" />
         <entry key="app/src/main/res/layout/listview_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/tab1_list_item.xml" value="0.20885416666666667" />
-        <entry key="app/src/main/res/layout/tab3_list_item.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/tab3_list_item.xml" value="0.1" />
       </map>
     </option>
   </component>

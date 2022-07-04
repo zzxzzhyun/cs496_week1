@@ -1,23 +1,34 @@
 package com.example.week_1;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+import static androidx.test.core.app.ActivityScenario.launch;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ActivityScenario;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private Context mContext ;
-    private List<Food> mData;
+    private List<Restaurant> mData;
+    private List<Long> location;
 
-    public RecyclerViewAdapter(Context mContext, List<Food> mData) {
+    public RecyclerViewAdapter(Context mContext, List<Restaurant> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -34,18 +45,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_book_title.setText(mData.get(position).getRestaurant());
-        holder.img_book_thumbnail.setImageResource(mData.get(position).getThumbnail());
+        holder.img_book_thumbnail.setImageResource(mData.get(position).getPic()[0]);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, FoodActivity.class);
-                intent.putExtra("Restaruant", mData.get(position).getRestaurant());
-                intent.putExtra("Category", mData.get(position).getCategory());
-                intent.putExtra("Thumbnail", mData.get(position).getThumbnail());
+                intent.putExtra("name", mData.get(position).getName());
+                intent.putExtra("category", mData.get(position).getCategory());
+                intent.putExtra("location", mData.get(position).getLocation());
+                intent.putExtra("lat", mData.get(position).getLat());
+                intent.putExtra("lon", mData.get(position).getLon());
+                intent.putExtra("pic1", mData.get(position).getPic()[0]);
+                ((Activity)mContext).finish();
                 mContext.startActivity(intent);
             }
-
         });
     }
 
@@ -63,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            tv_book_title = (TextView) itemView.findViewById(R.id.restaurant_id);
+//            tv_book_title = (TextView) itemView.findViewById(R.id.restaurant_id);
             img_book_thumbnail = (ImageView) itemView.findViewById(R.id.food_img_id);
             cardView = (CardView) itemView.findViewById(R.id.cardview_id);
         }

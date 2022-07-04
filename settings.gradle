@@ -13,8 +13,9 @@ dependencyResolutionManagement {
         jcenter()
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
-        }
+            }
 
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "week-1"

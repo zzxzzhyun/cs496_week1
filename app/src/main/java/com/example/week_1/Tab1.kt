@@ -29,7 +29,6 @@ private const val ARG_PARAM2 = "param2"
 class Tab1 : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    var searchText = ""
     var sortText = "asc"
 
     private lateinit var homeViewModel: Tab1ViewModel
@@ -66,10 +65,8 @@ class Tab1 : Fragment() {
         root = inflater.inflate(R.layout.fragment_tab1, container, false)
 
         //setList()
-        //phones = root.findViewById(R.id.list_item)
-        //val adapter = ListViewAdapter()
-        //homeViewModel.setList(sortText, searchText)
-
+        phones = root.findViewById(R.id.list_item)
+        val adapter = ListViewAdapter(homeViewModel.getPhoneNumbers(sortText))
 
         //setAddButtonListener()
         val addButton : FloatingActionButton = root.findViewById(R.id.button_id)
@@ -78,15 +75,18 @@ class Tab1 : Fragment() {
             startActivityForResult(addButtonIntent,10001)
         }
 
-        /*
-        homeViewModel.allNumbers.observe(viewLifecycleOwner
-        ) {
-            it?.let {
-                adapter.data = it
-            }
-        }
+
+       // homeViewModel.allNumbers.observe(viewLifecycleOwner
+        //) {adapter.data}
         phones.adapter = adapter
-        phones.layoutManager = LinearLayoutManager(context)*/
+
+        phones.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(context, PhoneNumberActivity::class.java).apply{
+                putExtra("id",id.toInt())
+            }
+            startActivity(intent)
+        }
+
 
         return root
 
@@ -100,15 +100,6 @@ class Tab1 : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Tab1.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             Tab1().apply {

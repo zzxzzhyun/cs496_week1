@@ -1,5 +1,6 @@
 package com.example.week_1
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,8 @@ class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter
             }
 
             return convertView
-
     }
+
+
+
 }

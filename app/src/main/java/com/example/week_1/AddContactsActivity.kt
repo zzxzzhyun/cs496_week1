@@ -29,13 +29,13 @@ class AddContactsActivity : AppCompatActivity() {
             var name: String = createButtonName.text.toString()
             var phoneNumber: String = createButtonNumber.text.toString()
             if (name == "" || phoneNumber == "") {
-                Toast.makeText(this, "이름과 전화번호는 공백일 수 없습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "항목을 입력해주세요", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_CANCELED)
                 finish()
                 onResume()
             }
             else {
-                var ops: ArrayList<ContentProviderOperation> = ArrayList<ContentProviderOperation>()
+                var ops: ArrayList<ContentProviderOperation> = ArrayList()
                 var op: ContentProviderOperation.Builder =
                     ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                         .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)

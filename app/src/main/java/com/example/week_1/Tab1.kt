@@ -4,26 +4,21 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.json.JSONArray
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -31,6 +26,9 @@ class Tab1 : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var sortText = "asc"
+    val permissions = arrayOf(
+        Manifest.permission.READ_CONTACTS,
+        Manifest.permission.WRITE_CONTACTS)
 
     private lateinit var homeViewModel: Tab1ViewModel
     private lateinit var root : View
@@ -40,7 +38,9 @@ class Tab1 : Fragment() {
     var initSavedInstanceState : Bundle? = null
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+        //checkPermission()
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -49,10 +49,12 @@ class Tab1 : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        checkPermission()
         initInflater = inflater
         if (container != null) {
             initContainer = container
@@ -85,6 +87,7 @@ class Tab1 : Fragment() {
                 val item = allnumbers[id.toInt()]
                 putExtra("Name", item.name)
                 putExtra("Phone", item.phone)
+                putExtra("Email", item.email)
             }
             startActivity(intent)
         }
@@ -94,6 +97,8 @@ class Tab1 : Fragment() {
 
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == 10001) && (resultCode == Activity.RESULT_OK)) {
@@ -112,4 +117,24 @@ class Tab1 : Fragment() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkPermission() {
+        if (!isPermitted()) {
+            ActivityCompat.requestPermissions(context as Activity, permissions, 99)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun isPermitted() : Boolean {
+        for (perm in permissions) {
+            if (ContextCompat.checkSelfPermission(
+                    context as Activity,
+                    perm
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+        return true
+    }
 }

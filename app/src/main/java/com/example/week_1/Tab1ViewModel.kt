@@ -20,6 +20,7 @@ class Tab1ViewModel(
     fun getPhoneNumbers(sort:String, searchName:String?) : MutableList<ListViewItem> {
 
         val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+        //val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
         val projections = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER)
 
         var wheneClause:String? = null
@@ -34,18 +35,21 @@ class Tab1ViewModel(
         val optionSort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " $sort"
 
         val cursorOrNull = context?.contentResolver?.query(phoneUri,projections,wheneClause,whereValues,optionSort)
+        //val secondcursorOrNull = context?.contentResolver?.query(emailUri,projections,wheneClause,whereValues,optionSort)
         if (cursorOrNull != null) {
 
             val cursor = cursorOrNull
             val idColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
             val nameColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
+            //val emailColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getString(idColumn)
                 name = cursor.getString(nameColumn)
                 number = featPhoneNumber(cursor.getString(numberColumn))
-                val phoneModel = ListViewItem(name, "nickname", "food", "email", number)
+                //email = cursor.getString(emailColumn)
+                val phoneModel = ListViewItem(name, "nickname", "food", email, number)
                 list.add(phoneModel)
             }
             cursor.close()

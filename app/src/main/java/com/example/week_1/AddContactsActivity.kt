@@ -73,12 +73,26 @@ class AddContactsActivity : AppCompatActivity() {
                     )
                 ops.add(op.build())
 
+
+
+                op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)// rawContact_NewID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
+                ops.add(op.build())
+
+
+
+
                 this.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops)
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_OK)
                 finish()
-                onResume()
+                //onResume()
             }
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

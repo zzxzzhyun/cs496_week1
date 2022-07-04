@@ -1,20 +1,29 @@
 package com.example.week_1
 
+import android.app.Activity.RESULT_OK
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.example.week_1.databinding.FragmentTab3Binding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.OnMapClickListener
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
+import org.json.JSONArray
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,9 +41,17 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     private var param1: String? = null
     private var param2: String? = null
 
+    var curLon: Double? = null
+    var curLat: Double? = null
+    var curRes: String? = null
+
+    var array = mutableListOf<ListViewItem>()
+
     private val marker = Marker()
     private val marker1 = Marker()
     private val marker2 = Marker()
+
+    private lateinit var binding: FragmentTab3Binding
 
     private lateinit var mainActivity: MainActivity
     private lateinit var mapView: MapView
@@ -56,7 +73,10 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             param2 = it.getString(ARG_PARAM2)
         }
         locationSource = FusedLocationSource(this, LOCATION_PERMISSTION_REQUEST_CODE)
+
+        binding = FragmentTab3Binding.inflate(layoutInflater)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +84,45 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     ): View? {
         // Inflate the layout for this fragment
         val root: View = inflater.inflate(R.layout.fragment_tab3, container, false)
+        val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
+        val jsonarray = JSONArray(jsonString)
+        for (i in 0 until jsonarray.length()){
+            val person = jsonarray.getJSONObject(i)
+            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getString("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
+        }
+
+        val listView : ListView = root.findViewById(R.id.tab3ListView)
+
+        val adapter = Tab3ListViewAdapter(array)
+        listView.adapter = adapter
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            Log.d("parent", parent.toString())
+            Log.d("view", view.toString())
+            Log.d("position", position.toString())
+            Log.d("id", id.toString())
+            Log.d("name", array[id.toInt()].name)
+            val latitude = 37.62444907132257
+            val logitude = 127.09321109051345
+            moveCam(latitude, logitude)
+        }
+
         return root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        curLon = arguments?.getDouble("lon")
+        curLat = arguments?.getDouble("lat")
+        curRes = arguments?.getString("res")
+
+        super.onActivityCreated(savedInstanceState)
+
+    }
+
+    fun moveCam(latitude : Double, logitude : Double){
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, logitude)).animate(CameraAnimation.Fly, 1000)
+        naverMap.moveCamera(cameraUpdate)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,8 +168,16 @@ class Tab3 : Fragment(), OnMapReadyCallback {
                 Log.w("tag", "@@@@@@ logitude $logitude")
             }
 
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.5666102, 126.9783881))
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(36.2424, 126.9783881))
         naverMap.moveCamera(cameraUpdate)
+
+        if (curLon != null && curLon!! > 1) {
+            moveCam(curLat!!, curLon!!)
+            curLat = null
+            curLon = null
+            curRes = null
+            Log.d("move", "good")
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -162,6 +228,8 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     }
 
     companion object {
+//        lateinit var arguments: Bundle
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

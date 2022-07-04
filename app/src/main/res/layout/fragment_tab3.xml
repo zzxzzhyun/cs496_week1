@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tab3">
+    tools:context=".MainActivity"
+    android:gravity="bottom"
+    app:umanoDragView="@id/slide_layout"
+    app:umanoFadeColor="@android:color/transparent"
+    >
 
-<!--    <ListView-->
-<!--        android:id="@+id/tab3_list_item"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1"-->
-<!--        android:background="#FFFFFF"-->
-<!--        android:drawSelectorOnTop="false">-->
-<!--    </ListView>-->
-<!--    <fragment android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:id="@+id/map"-->
-<!--        android:name="com.naver.maps.map.MapFragment" />-->
-
-    <com.naver.maps.map.MapView
-        android:id="@+id/map"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/back_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="400dp"
+        android:background="#42A5F5">
 
-</FrameLayout>
+        <com.naver.maps.map.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/slide_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape">
+
+        <ListView
+            android:id="@+id/tab3ListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:drawSelectorOnTop="false">
+        </ListView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

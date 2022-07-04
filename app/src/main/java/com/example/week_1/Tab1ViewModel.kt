@@ -33,18 +33,12 @@ class Tab1ViewModel(
             val idColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
             val nameColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
-            val nicknameColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Nickname.NAME)
-            val emailColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA)
-            val foodColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Note.NOTE)
 
 
             while (cursor.moveToNext()) {
                 val id = cursor.getString(idColumn)
                 val name = cursor.getString(nameColumn)
                 val number = featPhoneNumber(cursor.getString(numberColumn))
-                val nickname = cursor.getString(nicknameColumn)
-                val email = cursor.getString(emailColumn)
-                val food = cursor.getString(foodColumn)
 
                 val phoneModel = ListViewItem(name, "nickname", "food", "email", number)
                 list.add(phoneModel)

@@ -10,12 +10,9 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
     private Context context;
 
-    public Integer[] images = {
-            R.mipmap.beach2, R.mipmap.beach3,
-            R.mipmap.beach4, R.mipmap.beach4,
-            R.mipmap.beach4, R.mipmap.beach4,
-            R.mipmap.beach4, R.mipmap.beach4
-
+    public Integer[] images = { R.mipmap.food1,
+//            R.drawable.beach4, R.drawable.beach4,
+//            R.drawable.beach4, R.drawable.beach4
     };
 
     public ImageAdapter(Context c) {
@@ -41,7 +38,7 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         ImageView imageView = new ImageView(context);
         imageView.setImageResource(images[position]);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(240, 240));
         return imageView;
     }

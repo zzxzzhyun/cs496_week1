@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".MyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textview"
         android:layout_gravity="center"

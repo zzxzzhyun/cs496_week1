@@ -24,15 +24,22 @@ class ListViewAdapter(private val items: MutableList<ListViewItem>): BaseAdapter
             var name : TextView? = convertView?.findViewById<TextView>(R.id.list_name)
             var nickname : TextView? = convertView?.findViewById<TextView>(R.id.list_nickname)
 
+
             var item: ListViewItem = items[position]
 
             if(img != null) {
                 img.setImageResource(R.drawable.ic_baseline_people)
             }
             if (name != null) {
+                if(item.name==""){
+                    item.name = "No Name"
+                }
                 name.setText(item.name)
             }
             if (nickname != null) {
+                if(item.nickname==""){
+                    item.nickname = "No Nickame"
+                }
                 nickname.setText(item.nickname)
             }
 

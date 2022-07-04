@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.WRITE_CONTACTS)
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

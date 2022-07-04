@@ -30,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            android:text="이름없음"
             android:inputType="textPersonName"
             android:textColorHint="#616161" />
     </com.google.android.material.textfield.TextInputLayout>

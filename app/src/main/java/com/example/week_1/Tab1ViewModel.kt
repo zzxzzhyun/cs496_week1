@@ -15,10 +15,9 @@ class Tab1ViewModel(
 ) : AndroidViewModel(application)  {
 
     private val context = getApplication<Application>().applicationContext
-    var allNumbers  = mutableListOf<ListViewItem>()
+    var list : ArrayList<ListViewItem> = ArrayList()
 
     fun getPhoneNumbers(sort:String) : ArrayList<ListViewItem> {
-        var list : ArrayList<ListViewItem> = ArrayList()
         val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI //전화번호 URI
         val projections = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER)
 
@@ -46,7 +45,7 @@ class Tab1ViewModel(
                 val email = cursor.getString(emailColumn)
                 val food = cursor.getString(foodColumn)
 
-                val phoneModel = ListViewItem(name, "nickname", "food", "email", number)
+                val phoneModel = ListViewItem(name, nickname, food, email, number)
                 list.add(phoneModel)
             }
             cursor.close()

@@ -11,6 +11,7 @@ import org.json.JSONArray
 
 
 class PhoneNumberActivity : AppCompatActivity() {
+    private lateinit var homeViewModel: Tab1ViewModel
 
     private lateinit var binding: ActivityPhoneNumberBinding
 
@@ -25,26 +26,16 @@ class PhoneNumberActivity : AppCompatActivity() {
         val email: TextView = findViewById(R.id.userEmailDetail)
         val favorite: TextView = findViewById(R.id.userFavoriteDetail)
 
-
-        val jsonString = this.assets?.open("phoneNumber.json")?.reader()?.readText()
-        val jsonarray = JSONArray(jsonString)
         val value = intent.getIntExtra("id",0)
-        val person = jsonarray.getJSONObject(value)
+        val contacts = homeViewModel.getPhoneNumbers("asc")
+        val person = contacts[value]
 
-        name.text = person.getString("Display Name")
-        nickname.text = person.getString("Nickname")
-        phone.text = person.getString("Mobile Phone")
-        email.text = person.getString("email")
+        name.text = person.name
+        nickname.text = person.nickname
+        phone.text = person.phone
+        email.text = person.email
+        favorite.text = person.favorite
 
-        var favor: String = ""
-        for (i in 0..2){
-            favor += person.getJSONArray("Favorite").get(i) as CharSequence?
-            if(i < 2){
-                favor += ", "
-            }
-        }
-
-        favorite.text = favor
     }
 
 

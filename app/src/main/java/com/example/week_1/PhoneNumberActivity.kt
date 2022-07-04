@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.week_1.databinding.ActivityPhoneNumberBinding
 import com.example.week_1.databinding.Tab1ListItemBinding
 import org.json.JSONArray
 
 
 class PhoneNumberActivity : AppCompatActivity() {
-    private lateinit var homeViewModel: Tab1ViewModel
 
     private lateinit var binding: ActivityPhoneNumberBinding
 
@@ -26,15 +26,8 @@ class PhoneNumberActivity : AppCompatActivity() {
         val email: TextView = findViewById(R.id.userEmailDetail)
         val favorite: TextView = findViewById(R.id.userFavoriteDetail)
 
-        val value = intent.getIntExtra("id",0)
-        val contacts = homeViewModel.getPhoneNumbers("asc")
-        val person = contacts[value]
-
-        name.text = person.name
-        nickname.text = person.nickname
-        phone.text = person.phone
-        email.text = person.email
-        favorite.text = person.favorite
+        name.text = intent.getStringExtra("Name")
+        phone.text = intent.getStringExtra("Phone")
 
     }
 

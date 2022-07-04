@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,7 +67,8 @@ class Tab1 : Fragment() {
 
         //setList()
         phones = root.findViewById(R.id.list_item)
-        val adapter = ListViewAdapter(homeViewModel.getPhoneNumbers(sortText))
+        val allnumbers = homeViewModel.getPhoneNumbers(sortText,"")
+        val adapter = PhoneAdapter(allnumbers)
 
         //setAddButtonListener()
         val addButton : FloatingActionButton = root.findViewById(R.id.button_id)
@@ -75,14 +77,14 @@ class Tab1 : Fragment() {
             startActivityForResult(addButtonIntent,10001)
         }
 
-
-       // homeViewModel.allNumbers.observe(viewLifecycleOwner
-        //) {adapter.data}
         phones.adapter = adapter
 
         phones.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(context, PhoneNumberActivity::class.java).apply{
-                putExtra("id",id.toInt())
+                Log.d("clickedornot", "clicked")
+                val item = allnumbers[id.toInt()]
+                putExtra("Name", item.name)
+                putExtra("Phone", item.phone)
             }
             startActivity(intent)
         }

@@ -29,6 +29,8 @@ class PhoneNumberActivity : AppCompatActivity() {
         name.text = intent.getStringExtra("Name")
         phone.text = intent.getStringExtra("Phone")
         email.text = intent.getStringExtra("Email")
+        nickname.text = intent.getStringExtra("Nickname")
+        favorite.text = intent.getStringExtra("Food")
 
     }
 

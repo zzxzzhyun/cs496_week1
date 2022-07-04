@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.viewPager.apply {
             adapter = MyPagerAdapter(context as FragmentActivity)
         }
@@ -127,10 +126,8 @@ class MainActivity : AppCompatActivity() {
 
         @RequiresApi(Build.VERSION_CODES.M)
         override fun createFragment(position: Int): Fragment {
-
             return when (position) {
                 0 -> {
-                    checkPermission()
                     val tab1 = Tab1.newInstance("Contacts","")
                     return tab1
                 }
@@ -151,23 +148,6 @@ class MainActivity : AppCompatActivity() {
                     return tab3
                 }
             }
-        }
-
-        @RequiresApi(Build.VERSION_CODES.M)
-        private fun checkPermission() {
-            if (!isPermitted()) {
-                ActivityCompat.requestPermissions(this@MainActivity, permissions, 99)
-            }
-        }
-
-        @RequiresApi(Build.VERSION_CODES.M)
-        fun isPermitted() : Boolean {
-            for (perm in permissions) {
-                if (ContextCompat.checkSelfPermission(this@MainActivity, perm) != PackageManager.PERMISSION_GRANTED) {
-                    return false
-                }
-            }
-            return true
         }
 
 

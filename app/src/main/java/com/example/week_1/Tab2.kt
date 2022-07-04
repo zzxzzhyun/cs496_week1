@@ -33,7 +33,6 @@ class Tab2 : Fragment() {
     val LON: String? = null
     val RESTAURANT: String? = null
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 

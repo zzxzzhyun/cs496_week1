@@ -1,62 +1,88 @@
 package com.example.week_1
 
+import android.Manifest
 import android.app.Application
-import android.content.ContentUris
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.os.Build
 import android.provider.ContactsContract
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import java.io.InputStream
+
 
 class Tab1ViewModel(
     application : Application
 ) : AndroidViewModel(application)  {
 
-    private val context = getApplication<Application>().applicationContext
+    val context = getApplication<Application>().applicationContext
     var list : MutableList<ListViewItem> = ArrayList()
+    val permissions = arrayOf(
+        Manifest.permission.READ_CONTACTS,
+        Manifest.permission.WRITE_CONTACTS)
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun getPhoneNumbers(sort:String, searchName:String?) : MutableList<ListViewItem> {
 
         val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-        //val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
-        val projections = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER)
+        val projections = arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER)
 
         var wheneClause:String? = null
         var whereValues:Array<String>? = null
 
         var id: String=""
-        var name: String=""
-        var number: String=""
-        var nickname: String=""
-        var email: String=""
-        var food: String=""
+        var name = mutableListOf<String>()
+        var number= mutableListOf<String>()
+        var nickname = mutableListOf<String>()
+        var email = mutableListOf<String>()
+        var food = mutableListOf<String>()
         val optionSort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " $sort"
 
         val cursorOrNull = context?.contentResolver?.query(phoneUri,projections,wheneClause,whereValues,optionSort)
-        //val secondcursorOrNull = context?.contentResolver?.query(emailUri,projections,wheneClause,whereValues,optionSort)
         if (cursorOrNull != null) {
-
             val cursor = cursorOrNull
-            val idColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
             val nameColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
-            //val emailColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA)
-
             while (cursor.moveToNext()) {
-                val id = cursor.getString(idColumn)
-                name = cursor.getString(nameColumn)
-                number = featPhoneNumber(cursor.getString(numberColumn))
-                //email = cursor.getString(emailColumn)
-                val phoneModel = ListViewItem(name, "nickname", "food", email, number)
-                list.add(phoneModel)
+                name.add(cursor.getString(nameColumn))
+                number.add(featPhoneNumber(cursor.getString(numberColumn)))
             }
             cursor.close()
         }
+
+        val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
+        val emailprojections = arrayOf(ContactsContract.CommonDataKinds.Email.DATA)
+        val emailcursorOrNull = context?.contentResolver?.query(emailUri,emailprojections,wheneClause,whereValues,optionSort)
+        if (emailcursorOrNull != null) {
+            val cursor = emailcursorOrNull
+            val emailColumn = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA)
+            while (cursor.moveToNext()) {
+                email.add(cursor.getString(emailColumn))
+            }
+            cursor.close()
+        }
+
+/*
+        val noteUri = ContactsContract.Data.CONTENT_URI
+        val noteproj = arrayOf(ContactsContract.CommonDataKinds.Note.NOTE)
+        val whene = ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE + " = ?"
+
+        val notecursorOrNull = context?.contentResolver?.query(noteUri,noteproj,whene ,whereValues,optionSort)
+        if (notecursorOrNull != null) {
+            val cursor = notecursorOrNull
+            val noteColumn = cursor.getColumnIndexOrThrow(ContactsContract.Data.DATA1)
+            while (cursor.moveToNext()) {
+                nickname.add(cursor.getString(noteColumn))
+            }
+            cursor.close()
+        }
+*/
+
+        for (i in name.indices){
+            val phoneModel = ListViewItem(name[i], "nickname[i]","food[i]",email[i], number[i])
+            list.add(phoneModel)
+        }
+
+
         return list
     }
-
 
 
     fun featPhoneNumber(number : String) : String {

@@ -40,7 +40,6 @@ class Tab1 : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
-        //checkPermission()
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -88,6 +87,8 @@ class Tab1 : Fragment() {
                 putExtra("Name", item.name)
                 putExtra("Phone", item.phone)
                 putExtra("Email", item.email)
+                putExtra("Nickname", item.nickname)
+                putExtra("Food",item.favorite)
             }
             startActivity(intent)
         }

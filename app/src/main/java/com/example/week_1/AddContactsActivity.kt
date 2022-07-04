@@ -74,7 +74,6 @@ class AddContactsActivity : AppCompatActivity() {
                 ops.add(op.build())
 
 
-
                 op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)// rawContact_NewID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
@@ -82,6 +81,17 @@ class AddContactsActivity : AppCompatActivity() {
                 ops.add(op.build())
 
 
+                op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)// rawContact_NewID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Nickname.NAME, nickname)
+                ops.add(op.build())
+
+                op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)// rawContact_NewID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Note.NOTE, food)
+                ops.add(op.build())
 
 
                 this.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops)

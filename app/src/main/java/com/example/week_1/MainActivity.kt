@@ -29,11 +29,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+/*
    val permissions = arrayOf(
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.WRITE_CONTACTS)
-
+*/
     var curRes: String = ""
     var curLon : Double = 0.0
     var curLat : Double = 0.0
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
-        checkPermission()
+        //checkPermission()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkPermission() {
         if (!isPermitted()) {
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
-
+*/
 
     inner class MyPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
         private val NUM_PAGES = 3

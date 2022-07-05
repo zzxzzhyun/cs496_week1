@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -30,6 +31,9 @@ class AddContactsActivity : AppCompatActivity() {
         var createButtonEmail = findViewById(R.id.add_email) as EditText
         //var createButtonFood = findViewById(R.id.add_food) as EditText
         var createPhoneButton = findViewById(R.id.doneButton) as Button
+
+        var cancelButton = findViewById(R.id.cancelButton) as TextView
+
 
         createPhoneButton.setOnClickListener {
             var name: String = createButtonName.text.toString()
@@ -107,7 +111,19 @@ class AddContactsActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+
+        cancelButton.setOnClickListener{
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+            onResume()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
+
 
 
 

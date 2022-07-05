@@ -1,5 +1,6 @@
 package com.example.week_1
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.SearchView
 import androidx.annotation.NonNull
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -100,9 +102,27 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         }
 
         val listView : ListView = root.findViewById(R.id.tab3ListView)
-
+        val searchView: SearchView = root.findViewById(R.id.idSV)
         val adapter = Tab3ListViewAdapter(array)
         listView.adapter = adapter
+
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    adapter.filter.filter(s)
+                    Log.d(TAG, "SearchVies Text is changed : $s")
+                    listView.adapter = adapter
+//                    binding.phonelistview.layoutManager = LinearLayoutManager(context)
+                    return false
+                }
+            }
+        searchView.setOnQueryTextListener(searchViewTextListener)
 
         val slidePanel = binding.mainFrame                    // SlidingUpPanel
         slidePanel.addPanelSlideListener(PanelEventListener())

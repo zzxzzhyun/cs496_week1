@@ -38,10 +38,10 @@ class PhoneAdapter(private var items: MutableList<ListViewItem>): BaseAdapter() 
             name.setText(item.name)
         }
         if (nickname != null) {
-            if(item.phone==""){
-                item.phone = "No Number"
+            if(item.nickname==""){
+                item.nickname = "No Nickname"
             }
-            nickname.setText(item.phone)
+            nickname.setText(item.nickname)
         }
 
         return convertView

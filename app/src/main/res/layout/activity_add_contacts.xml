@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddContactsActivity">
+    tools:context=".AddContactsActivity"
+    android:onClick ="hideKeyboard">
 
     <ImageView
         android:id="@+id/default_user_img"
@@ -128,6 +129,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
  />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

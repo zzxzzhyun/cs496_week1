@@ -2,11 +2,14 @@ package com.example.week_1
 
 import android.app.Activity
 import android.content.ContentProviderOperation
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -35,7 +38,7 @@ class AddContactsActivity : AppCompatActivity() {
             var email: String = createButtonEmail.text.toString()
             var food: String = createButtonFood.text.toString()
 
-            if (name == "" && phoneNumber == "" && nickname=="" && email=="" && food=="") {
+            if (name == "" || phoneNumber == "" || nickname=="" || email=="" || food=="") {
                 Toast.makeText(this, "항목을 입력해주세요", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_CANCELED)
                 finish()
@@ -105,4 +108,15 @@ class AddContactsActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
+
+    fun hideKeyboard(view: View) {
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+
 }

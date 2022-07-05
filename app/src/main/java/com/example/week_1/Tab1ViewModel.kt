@@ -59,12 +59,11 @@ class Tab1ViewModel(
             cursor.close()
         }
 
-/*
-        val noteUri = ContactsContract.Data.CONTENT_URI
-        val noteproj = arrayOf(ContactsContract.CommonDataKinds.Note.NOTE)
-        val whene = ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE + " = ?"
 
-        val notecursorOrNull = context?.contentResolver?.query(noteUri,noteproj,whene ,whereValues,optionSort)
+        val noteUri = ContactsContract.Data.CONTENT_URI
+        val noteproj = arrayOf(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME)
+
+        val notecursorOrNull = context?.contentResolver?.query(noteUri,noteproj,null ,whereValues,optionSort)
         if (notecursorOrNull != null) {
             val cursor = notecursorOrNull
             val noteColumn = cursor.getColumnIndexOrThrow(ContactsContract.Data.DATA1)
@@ -73,10 +72,10 @@ class Tab1ViewModel(
             }
             cursor.close()
         }
-*/
+
 
         for (i in name.indices){
-            val phoneModel = ListViewItem(name[i], "nickname[i]","food[i]",email[i], number[i])
+            val phoneModel = ListViewItem(name[i], nickname[i*5+3],nickname[i*5+4],email[i], number[i])
             list.add(phoneModel)
         }
 

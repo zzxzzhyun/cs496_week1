@@ -1,17 +1,26 @@
 package com.example.week_1
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.example.week_1.databinding.FragmentTab3Binding
+import com.google.android.gms.location.*
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.OnMapClickListener
@@ -21,6 +30,7 @@ import com.sothree.slidinguppanel.PanelSlideListener
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ScrollableViewHelper
 import org.json.JSONArray
+import java.util.jar.Manifest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -66,6 +76,12 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSTION_REQUEST_CODE: Int = 1000
     private lateinit var locationSource: FusedLocationSource // 위치를 반환하는 구현체
     private lateinit var naverMap: NaverMap
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
+    var mLastLocation: Location? = null// 위치 값을 가지고 있는 객체
+    internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    private val REQUEST_PERMISSION_LOCATION = 10
+    lateinit var listView: ListView
+    private lateinit var adapter : Tab3ListViewAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -83,6 +99,13 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         locationSource = FusedLocationSource(this, LOCATION_PERMISSTION_REQUEST_CODE)
 
         binding = FragmentTab3Binding.inflate(layoutInflater)
+
+        mLocationRequest =  LocationRequest.create().apply {
+
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        }
+        startLocationUpdates()
     }
 
     override fun onCreateView(
@@ -99,10 +122,28 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             array.add(Restaurant(store.getString("name"), store.getString("location"), store.getString("category"), store.getDouble("lon"), store.getDouble("lat"),arrayOf(images[2 * i], images[2 * i + 1])))
         }
 
-        val listView : ListView = root.findViewById(R.id.tab3ListView)
-
-        val adapter = Tab3ListViewAdapter(array)
+        listView = root.findViewById(R.id.tab3ListView)
+        val searchView: SearchView = root.findViewById(R.id.idSV)
+        adapter = Tab3ListViewAdapter(array, mLastLocation)
         listView.adapter = adapter
+
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    adapter.filter.filter(s)
+                    Log.d(TAG, "SearchVies Text is changed : $s")
+                    listView.adapter = adapter
+//                    binding.phonelistview.layoutManager = LinearLayoutManager(context)
+                    return false
+                }
+            }
+        searchView.setOnQueryTextListener(searchViewTextListener)
 
         val slidePanel = binding.mainFrame                    // SlidingUpPanel
         slidePanel.addPanelSlideListener(PanelEventListener())
@@ -164,18 +205,52 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun calDist(lat1:Double, lon1:Double, lat2:Double, lon2:Double) : Long{
-        val EARTH_R = 6371000.0
-        val rad = Math.PI / 180
-        val radLat1 = rad * lat1
-        val radLat2 = rad * lat2
-        val radDist = rad * (lon1 - lon2)
+    private fun startLocationUpdates() {
 
-        var distance = Math.sin(radLat1) * Math.sin(radLat2)
-        distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist)
-        val ret = EARTH_R * Math.acos(distance)
+        //FusedLocationProviderClient의 인스턴스를 생성.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainActivity)
+        if (ActivityCompat.checkSelfPermission(mainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(mainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        // 기기의 위치에 관한 정기 업데이트를 요청하는 메서드 실행
+        // 지정한 루퍼 스레드(Looper.myLooper())에서 콜백(mLocationCallback)으로 위치 업데이트를 요청
+        mFusedLocationProviderClient!!.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
+    }
 
-        return Math.round(ret) // 미터 단위
+    // 시스템으로 부터 위치 정보를 콜백으로 받음
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
+            locationResult.lastLocation
+            onLocationChanged(locationResult.lastLocation)
+        }
+    }
+
+    // 시스템으로 부터 받은 위치정보를 화면에 갱신해주는 메소드
+    fun onLocationChanged(location: Location) {
+        mLastLocation = location
+//        text2.text = "위도 : " + mLastLocation.latitude // 갱신 된 위도
+//        text1.text = "경도 : " + mLastLocation.longitude // 갱신 된 경도
+        adapter = Tab3ListViewAdapter(array, location)
+        listView.adapter = adapter
+
+    }
+
+    // 위치 권한이 있는지 확인하는 메서드
+    private fun checkPermissionForLocation(context: Context): Boolean {
+        // Android 6.0 Marshmallow 이상에서는 위치 권한에 추가 런타임 권한이 필요
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                true
+            } else {
+                // 권한이 없으므로 권한 요청 알림 보내기
+                ActivityCompat.requestPermissions(mainActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_PERMISSION_LOCATION)
+                false
+            }
+        } else {
+            true
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

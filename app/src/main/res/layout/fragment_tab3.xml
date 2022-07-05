@@ -33,13 +33,13 @@
         android:id="@+id/slide_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/transparent"
+        android:background="@drawable/shape"
+        android:backgroundTint="@color/white"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/transparent"
             android:background="@drawable/shape"
             android:orientation="vertical">
             <View
@@ -53,6 +53,15 @@
                 android:layout_marginBottom="12dp"
                 />
 
+            <SearchView
+                android:id="@+id/idSV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:iconifiedByDefault="false"
+                android:padding="4dp"
+                android:queryHint="Search Restaurant" />
+
             <ListView
                 android:id="@+id/tab3ListView"
                 android:layout_width="match_parent"
@@ -61,7 +70,5 @@
                 android:drawSelectorOnTop="false">
             </ListView>
         </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

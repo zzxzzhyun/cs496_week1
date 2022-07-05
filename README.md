@@ -17,6 +17,7 @@
 
 
 ### TAB 1 - Contacts
+![Screen Shot 2022-07-05 at 9 37 33 PM](https://user-images.githubusercontent.com/88198439/177329174-916248fe-9c83-41ed-88c4-c78eccb84a60.png)
 
 Major features
 - 핸드폰에 내장된 연락처를 불러옵니다. 

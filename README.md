@@ -14,7 +14,11 @@
 
 
 ### C. 어플리케이션 소개 
-
+### Layout - Tabview
+- viewpager2와 Tablayout을 이용해서 탭 레이아웃 구현했습니다.
+- 스와이프와 하단 탭 메뉴 선택을 통해 레이아웃을 이동할 수 있습니다.
+- Tab1과 Tab2는 스와이프로 이동가능하게 했으나, 지도가 위치한 Tab3에 접근한 경우 스와이프 이벤트를 막도록 설정했습니다
+- 상단에는 커스텀 Toolbar를 만들어 tab 이동 시 title이 변경되도록 설정했습니다
 
 ### TAB 1 - Contacts
 ![Screen Shot 2022-07-05 at 9 37 33 PM](https://user-images.githubusercontent.com/88198439/177329174-916248fe-9c83-41ed-88c4-c78eccb84a60.png)
@@ -23,13 +27,16 @@ Major features
 - 핸드폰에 내장된 연락처를 불러옵니다. 
 - 우측 하단의 + 버튼을 누르면 연락처를 추가할 수 있는 화면으로 이동할 수 있습니다.
     - 추가한 연락처는 디바이스에 자동으로 저장됩니다. 
+    - 연락처에 최소 한 가지 이상 항목을 입력하지 않으면 연락처를 저장할 수 없습니다.    
 - 각 연락처 탭을 눌러 해당 인물의 상세정보를 확인할 수 있습니다. 
-    - 상세정보에는 인물의 이름, 번호와 이메일이 표시됩니다. 
+    - 상세정보에는 인물의 이름, 번호와 이메일이 표시됩니다.
 
 기술 설명
 - List View를 이용하여 저장된 인물정보를 보여줍니다. 
-- Context에 있는 ContentResolver 객체를 사용하여 내장된 연락처 정보를 불러올 수 있습니다.
-- ContentProviderOperation를 이용해 디바이스 데이터에 접근하여 연락처를 추가할 수 있습니다. 
+- Context에 있는 ContentResolver 객체를 사용하여 내장된 연락처 정보를 불러옵니다. 
+    - 각 ContactsContract.Data._ID_ 별로 CommonDataKinds.Phone.DISPLAY_NAME, CommonDataKinds.Phone.NUMBER, CommonDataKinds.Email.DATA를 access해 이름, 번호, 이메일 정보를 읽을 수 있습니다.
+- ContentProviderOperation를 이용해 디바이스 데이터에 접근하여 연락처를 추가할 수 있습니다.
+- 연락처 세부정보 탭 실행과 연락처 추가 탭 실행은 activity로 구현했습니다.
 
 ### TAB 2 - Gallery
 ![Screen Shot 2022-07-05 at 8 25 57 PM](https://user-images.githubusercontent.com/88198439/177317275-9e760c1d-5337-4426-881a-34fd2be87289.png)

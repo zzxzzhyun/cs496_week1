@@ -12,7 +12,7 @@
     app:umanoFadeColor="@android:color/transparent"
     app:umanoParallaxOffset="100dp"
     app:umanoPanelHeight="28dp"
-    app:umanoOverlay="false"
+    app:umanoOverlay="true"
     app:umanoScrollableView="@id/tab3ListView"
     >
 

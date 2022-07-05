@@ -1,9 +1,6 @@
 package com.example.week_1
 
-import android.app.Activity.RESULT_OK
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,18 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.week_1.databinding.FragmentTab3Binding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.OnMapClickListener
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
-import com.naver.maps.map.util.MarkerIcons
+import com.sothree.slidinguppanel.PanelSlideListener
+import com.sothree.slidinguppanel.PanelState
+import com.sothree.slidinguppanel.ScrollableViewHelper
 import org.json.JSONArray
 
 
@@ -41,15 +38,26 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     private var param1: String? = null
     private var param2: String? = null
 
+    var selLon: Double? = null
+    var selLat: Double? = null
+    var selRes: String? = null
     var curLon: Double? = null
     var curLat: Double? = null
-    var curRes: String? = null
+    var tab3Clicked: Boolean = false
 
-    var array = mutableListOf<ListViewItem>()
+    var array = mutableListOf<Restaurant>()
+    var images = arrayOf(
+        R.mipmap.food1, R.mipmap.food2, R.mipmap.food3, R.mipmap.food4, R.mipmap.food5, R.mipmap.food6,
+        R.mipmap.food7, R.mipmap.food8, R.mipmap.food9, R.mipmap.food10, R.mipmap.food11, R.mipmap.food12,
+        R.mipmap.food13, R.mipmap.food14, R.mipmap.food15, R.mipmap.food16, R.mipmap.food17, R.mipmap.food18,
+        R.mipmap.food19, R.mipmap.food20, R.mipmap.food21, R.mipmap.food22, R.mipmap.food23, R.mipmap.food24,
+        R.mipmap.food25, R.mipmap.food26, R.mipmap.food27, R.mipmap.food28, R.mipmap.food29, R.mipmap.food30
+    )
+
 
     private val marker = Marker()
-    private val marker1 = Marker()
-    private val marker2 = Marker()
+//    private val marker1 = Marker()
+//    private val marker2 = Marker()
 
     private lateinit var binding: FragmentTab3Binding
 
@@ -77,18 +85,18 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         binding = FragmentTab3Binding.inflate(layoutInflater)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val root: View = inflater.inflate(R.layout.fragment_tab3, container, false)
-        val jsonString = activity?.assets?.open("phoneNumber.json")?.reader()?.readText()
+        val list: View = inflater.inflate(R.layout.tab3_list_item, container, false)
+        val jsonString = activity?.assets?.open("storeData.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)
         for (i in 0 until jsonarray.length()){
-            val person = jsonarray.getJSONObject(i)
-            array.add(ListViewItem(person.getString("Display Name"), person.getString("Nickname"), person.getString("Favorite"), person.getString("email"), person.getString("Mobile Phone")))
+            val store = jsonarray.getJSONObject(i)
+            array.add(Restaurant(store.getString("name"), store.getString("location"), store.getString("category"), store.getDouble("lon"), store.getDouble("lat"),arrayOf(images[2 * i], images[2 * i + 1])))
         }
 
         val listView : ListView = root.findViewById(R.id.tab3ListView)
@@ -96,32 +104,96 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         val adapter = Tab3ListViewAdapter(array)
         listView.adapter = adapter
 
+        val slidePanel = binding.mainFrame                    // SlidingUpPanel
+        slidePanel.addPanelSlideListener(PanelEventListener())
+        slidePanel.setScrollableViewHelper(NestedScrollableViewHelper())
+//        val distance =  calDist(latitude, logitude, curLat!!, curLon!!)
+//        val dist: TextView = list.findViewById(R.id.distance)
+//        dist.setText("${dist} km")
+
         listView.setOnItemClickListener { parent, view, position, id ->
-            Log.d("parent", parent.toString())
-            Log.d("view", view.toString())
-            Log.d("position", position.toString())
-            Log.d("id", id.toString())
-            Log.d("name", array[id.toInt()].name)
-            val latitude = 37.62444907132257
-            val logitude = 127.09321109051345
+            var state = slidePanel.panelState
+            var layout: View? = root.findViewById(R.id.slide_layout)
+            if (layout != null) {
+                layout.performClick()
+            }
+            val latitude = array[position].lat
+            val logitude = array[position].lon
+            Log.d("Lat", latitude.toString())
+            Log.d("Lon", logitude.toString())
             moveCam(latitude, logitude)
+            marker.position = LatLng(latitude, logitude)
+            marker.map = naverMap
+            marker.captionText = array[position].name
+        }
+        return root
+    }
+
+    inner class PanelEventListener : PanelSlideListener {
+        // 패널이 슬라이드 중일 때
+        override fun onPanelSlide(panel: View, slideOffset: Float) {
+//            TODO("Not yet implemented")
         }
 
-        return root
+        override fun onPanelStateChanged(
+            panel: View,
+            previousState: PanelState,
+            newState: PanelState
+        ) {
+            if (newState == PanelState.COLLAPSED) {
+                binding.mainFrame.isEnabled = false
+            } else if (newState == PanelState.EXPANDED) {
+                binding.mainFrame.isEnabled = true
+            }
+        }
+    }
+
+    inner class NestedScrollableViewHelper : ScrollableViewHelper() {
+        override fun getScrollableViewScrollPosition(scrollableView: View?, isSlidingUp: Boolean): Int {
+            return if (binding.tab3ListView is NestedScrollView) {
+                if (isSlidingUp) {
+                    binding.tab3ListView.getScrollY()
+                } else {
+                    val nsv = binding.tab3ListView as NestedScrollView
+                    val child = nsv.getChildAt(0)
+                    child.bottom - (nsv.height + nsv.scrollY)
+                }
+            } else {
+                0
+            }
+        }
+    }
+
+    private fun calDist(lat1:Double, lon1:Double, lat2:Double, lon2:Double) : Long{
+        val EARTH_R = 6371000.0
+        val rad = Math.PI / 180
+        val radLat1 = rad * lat1
+        val radLat2 = rad * lat2
+        val radDist = rad * (lon1 - lon2)
+
+        var distance = Math.sin(radLat1) * Math.sin(radLat2)
+        distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist)
+        val ret = EARTH_R * Math.acos(distance)
+
+        return Math.round(ret) // 미터 단위
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
-        curLon = arguments?.getDouble("lon")
-        curLat = arguments?.getDouble("lat")
-        curRes = arguments?.getString("res")
+        selLon = arguments?.getDouble("lon")
+        selLat = arguments?.getDouble("lat")
+        selRes = arguments?.getString("res")
 
+        Log.d("lon", selLon.toString())
+        Log.d("lat", selLat.toString())
+        if(selRes != null) {
+            Log.d("res", selRes!!)
+        }
         super.onActivityCreated(savedInstanceState)
-
     }
 
-    fun moveCam(latitude : Double, logitude : Double){
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, logitude)).animate(CameraAnimation.Fly, 1000)
+    fun moveCam(lon : Double, lat : Double){
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(lon, lat)).animate(CameraAnimation.Fly, 1000)
         naverMap.moveCamera(cameraUpdate)
     }
 
@@ -142,18 +214,9 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Face
 
-        marker.position = LatLng(37.6281, 127.0905)
-        marker.map = naverMap
-        marker.icon = MarkerIcons.BLACK // 마커 검은색으로
-        marker.iconTintColor = Color.RED // 현재위치 마커 빨간색으로
-        marker1.position = LatLng(37.62444907132257, 127.09321109051345)
-        marker1.map = naverMap
-        marker1.captionText = "화랑대 철도공원"
-        marker2.position = LatLng(37.608990485010956, 127.0703518565252)
-        marker2.map = naverMap // 고씨네
-        marker2.captionText = "중랑천 산책로"
-
         naverMap.addOnLocationChangeListener { location ->
+            curLat = location.latitude
+            curLon = location.longitude
 //            Toast.makeText(mainActivity, "${location.latitude}, ${location.longitude}",
 //                Toast.LENGTH_SHORT).show()
         }
@@ -168,15 +231,22 @@ class Tab3 : Fragment(), OnMapReadyCallback {
                 Log.w("tag", "@@@@@@ logitude $logitude")
             }
 
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(36.2424, 126.9783881))
-        naverMap.moveCamera(cameraUpdate)
+//        val cameraUpdate = CameraUpdate.scrollTo(LatLng(36.2424, 126.9783881))
+//        naverMap.moveCamera(cameraUpdate)
 
-        if (curLon != null && curLon!! > 1) {
-            moveCam(curLat!!, curLon!!)
-            curLat = null
-            curLon = null
-            curRes = null
+        if (selLon != null && selLon!! > 1) {
+            moveCam(selLat!!, selLon!!)
             Log.d("move", "good")
+            marker.position = LatLng(selLat!!, selLon!!)
+            marker.map = naverMap
+//            marker.iconTintColor = Color.RED
+//            marker.icon = MarkerIcons.BLACK // 마커 검은색으로
+            marker.captionText = selRes!!
+            marker.width = Marker.SIZE_AUTO
+            marker.height = Marker.SIZE_AUTO
+            selLat = null
+            selLon = null
+            selRes = null
         }
     }
 

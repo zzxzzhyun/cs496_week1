@@ -16,4 +16,5 @@
     <color name="border">#E2E2E2</color>
     <color name="background">#FEFEFE</color>
     <color name="background2">#F5F4F4</color>
+    <color name="transparent">#00000000</color>
 </resources>

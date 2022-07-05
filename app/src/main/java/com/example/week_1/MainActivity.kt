@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     var curRes: String = ""
     var curLon : Double = 0.0
     var curLat : Double = 0.0
+    var back : Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,14 +52,14 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             when (position) {
                 0-> {
-                    tab.text = "Contact"
+//                    tab.text = "Contacts"
                     tab.setIcon(R.drawable.ic_baseline_people)}
                 1-> {
-                    tab.text = "Gallery"
+//                    tab.text = "Gallery"
                     tab.setIcon(R.drawable.ic_baseline_image)}
                 2-> {
-                    tab.text = "Map"
-                    tab.setIcon(R.drawable.ic_baseline_image)
+//                    tab.text = "Maps"
+                    tab.setIcon(R.drawable.ic_round_map_24)
                 }
             }
         }.attach()
@@ -68,34 +69,32 @@ class MainActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 when (position) {
                     0-> {
-                    binding.textView.text = "Contact"
-                    binding.viewPager.isUserInputEnabled = true;
+                        binding.textView.text = "Contacts"
+                        binding.viewPager.isUserInputEnabled = true;
                     }
                     1-> {
-                    binding.textView.text = "Gallery"
-                    binding.viewPager.isUserInputEnabled = true;
+                        binding.textView.text = "Gallery"
+                        binding.viewPager.isUserInputEnabled = true;
                     }
                     2-> {
-                    binding.textView.text = "Map"
-                    binding.viewPager.isUserInputEnabled = false;
+                        binding.textView.text = "Maps"
+                        binding.viewPager.isUserInputEnabled = false;
                     }
                 }
 
             }
         })
-
-        curRes = intent.getStringExtra("name").toString()
+        if(intent.getStringExtra("res") != null) {
+            curRes = intent.getStringExtra("res")!!
+        }
         curLon = intent.getDoubleExtra("lon", 0.0)
         curLat = intent.getDoubleExtra("lat", 0.0)
-        if (curRes != null) {
-            Log.d("mainname", curRes)
+        back = intent.getBooleanExtra("back", false)
+
+        if(back){
+            binding.viewPager.setCurrentItem(1, false)
         }
-
         if (curLon > 1) {
-
-//            this?.supportFragmentManager!!.beginTransaction()
-//                .replace(R.id.appBarLayout, Tab3())
-//                .commit()
             binding.viewPager.setCurrentItem(2, false)
 
         }
@@ -124,19 +123,19 @@ class MainActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = NUM_PAGES
 
-        @RequiresApi(Build.VERSION_CODES.M)
         override fun createFragment(position: Int): Fragment {
+
             return when (position) {
                 0 -> {
                     val tab1 = Tab1.newInstance("Contacts","")
                     return tab1
                 }
                 1 -> {
-                    val tab2 = Tab2.newInstance("Contacts","")
+                    val tab2 = Tab2.newInstance("Gallery","")
                     return tab2
                 }
                 else -> {
-                    val tab3 = Tab3.newInstance("Contacts","")
+                    val tab3 = Tab3.newInstance("Maps","")
                     var bundle = Bundle()
                     bundle.putDouble("lon", curLon)
                     bundle.putDouble("lat", curLat)
@@ -150,9 +149,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
     }
+
+
 
 
 }

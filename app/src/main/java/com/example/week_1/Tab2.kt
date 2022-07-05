@@ -80,8 +80,8 @@ class Tab2 : Fragment() {
 
         val jsonString = activity?.assets?.open("storeData.json")?.reader()?.readText()
         val jsonarray = JSONArray(jsonString)
-        for (i in 0 until jsonarray.length()){
-            val store = jsonarray.getJSONObject(i)
+        for (i in 0 until jsonarray.length() * 2){
+            val store = jsonarray.getJSONObject(i/2)
             val pic : Array<String> = arrayOf()
             storeArr.add(Restaurant(
                 store.getString("name"),
@@ -89,10 +89,10 @@ class Tab2 : Fragment() {
                 store.getString("category"),
                 store.getDouble("lon"),
                 store.getDouble("lat"),
-                arrayOf(images[2 * i], images[2 * i + 1])
+                arrayOf(images[i])
             ))
         }
-
+        storeArr.shuffle()
         val myrv: RecyclerView = root.findViewById(R.id.recyclerview_id)
         val myAdapter = RecyclerViewAdapter(context, storeArr)
         myrv.layoutManager = GridLayoutManager(context, 3)

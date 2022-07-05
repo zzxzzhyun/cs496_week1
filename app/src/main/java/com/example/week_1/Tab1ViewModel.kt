@@ -60,15 +60,15 @@ class Tab1ViewModel(
         }
 
 
-        val noteUri = ContactsContract.Data.CONTENT_URI
-        val noteproj = arrayOf(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME)
+        val otherUri = ContactsContract.Data.CONTENT_URI
+        val otherproj = arrayOf(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME)
 
-        val notecursorOrNull = context?.contentResolver?.query(noteUri,noteproj,null ,whereValues,optionSort)
-        if (notecursorOrNull != null) {
-            val cursor = notecursorOrNull
-            val noteColumn = cursor.getColumnIndexOrThrow(ContactsContract.Data.DATA1)
+        val othercursorOrNull = context?.contentResolver?.query(otherUri,otherproj,null ,whereValues,optionSort)
+        if (othercursorOrNull != null) {
+            val cursor = othercursorOrNull
+            val otherColumn = cursor.getColumnIndexOrThrow(ContactsContract.Data.DATA1)
             while (cursor.moveToNext()) {
-                nickname.add(cursor.getString(noteColumn))
+                nickname.add(cursor.getString(otherColumn))
             }
             cursor.close()
         }

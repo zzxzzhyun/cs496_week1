@@ -1,13 +1,13 @@
 package com.example.week_1
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -20,7 +20,6 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.sothree.slidinguppanel.PanelSlideListener
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ScrollableViewHelper
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import org.json.JSONArray
 
 
@@ -85,7 +84,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
 
         binding = FragmentTab3Binding.inflate(layoutInflater)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -180,7 +178,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         return Math.round(ret) // 미터 단위
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
         selLon = arguments?.getDouble("lon")
@@ -193,7 +190,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             Log.d("res", selRes!!)
         }
         super.onActivityCreated(savedInstanceState)
-
     }
 
     fun moveCam(lon : Double, lat : Double){
@@ -207,7 +203,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
         mapView.getMapAsync(this)
-
     }
 
     override fun onMapReady(@NonNull naverMap: NaverMap) {
@@ -218,7 +213,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
 
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Face
-
 
         naverMap.addOnLocationChangeListener { location ->
             curLat = location.latitude

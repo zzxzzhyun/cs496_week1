@@ -54,14 +54,14 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             when (position) {
                 0-> {
-                    tab.text = "Contact"
+//                    tab.text = "Contacts"
                     tab.setIcon(R.drawable.ic_baseline_people)}
                 1-> {
-                    tab.text = "Gallery"
+//                    tab.text = "Gallery"
                     tab.setIcon(R.drawable.ic_baseline_image)}
                 2-> {
-                    tab.text = "Map"
-                    tab.setIcon(R.drawable.ic_baseline_image)
+//                    tab.text = "Maps"
+                    tab.setIcon(R.drawable.ic_round_map_24)
                 }
             }
         }.attach()
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 when (position) {
                     0-> {
-                        binding.textView.text = "Contact"
+                        binding.textView.text = "Contacts"
                         binding.viewPager.isUserInputEnabled = true;
                     }
                     1-> {
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                         binding.viewPager.isUserInputEnabled = true;
                     }
                     2-> {
-                        binding.textView.text = "Map"
+                        binding.textView.text = "Maps"
                         binding.viewPager.isUserInputEnabled = false;
                     }
                 }
@@ -132,11 +132,11 @@ class MainActivity : AppCompatActivity() {
                     return tab1
                 }
                 1 -> {
-                    val tab2 = Tab2.newInstance("Contacts","")
+                    val tab2 = Tab2.newInstance("Gallery","")
                     return tab2
                 }
                 else -> {
-                    val tab3 = Tab3.newInstance("Contacts","")
+                    val tab3 = Tab3.newInstance("Maps","")
                     var bundle = Bundle()
                     bundle.putDouble("lon", curLon)
                     bundle.putDouble("lat", curLat)

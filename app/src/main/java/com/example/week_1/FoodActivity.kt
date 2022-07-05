@@ -1,5 +1,6 @@
 package com.example.week_1
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ class FoodActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityFoodBinding
 
+    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFoodBinding.inflate(layoutInflater)
@@ -39,7 +41,7 @@ class FoodActivity : AppCompatActivity() {
         }
 
         val button: Button = findViewById(R.id.mapButton)
-        val backBtn : Button = findViewById(R.id.back_button)
+        val backBtn : View = findViewById(R.id.back_button)
         button.setOnClickListener (View.OnClickListener(){
             val mIntent =
                 Intent(this, MainActivity::class.java).apply {

@@ -4,8 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18705035971223022" />
-        <entry key="app/src/main/res/layout/activity_food.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.43356643356643354" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable/ic_baseline_image.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.236" />
+        <entry key="app/src/main/res/drawable/ic_baseline_people.xml" value="0.1035" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3095" />
+        <entry key="app/src/main/res/drawable/ic_round_email.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_round_local_phone.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_round_map_24.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable/ic_round_star.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable/ic_round_storefront_24.xml" value="0.236" />
+        <entry key="app/src/main/res/drawable/round.xml" value="0.235" />
+        <entry key="app/src/main/res/drawable/shape.xml" value="0.11" />
+        <entry key="app/src/main/res/drawable/tabShape.xml" value="0.11" />
+        <entry key="app/src/main/res/drawable/topround.xml" value="0.235" />
+        <entry key="app/src/main/res/layout/activity_food.xml" value="0.32937927246093757" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4002944946289063" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_phone_number.xml" value="0.1" />
         <entry key="app/src/main/res/layout/cardview_item.xml" value="0.1" />

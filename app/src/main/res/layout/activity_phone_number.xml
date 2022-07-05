@@ -44,15 +44,6 @@
                     android:text="@string/app_name"
                     />
 
-                <TextView
-                    android:id="@+id/userNicknameDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/robotolight"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/app_name" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -123,45 +114,18 @@
                         android:textSize="20sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/shape"
-                    android:elevation="4dp"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:paddingStart="28dp">
-
-                    <ImageView
-                        android:id="@+id/userFavoriteIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:srcCompat="@drawable/ic_round_star" />
-
-                    <TextView
-                        android:id="@+id/userFavoriteDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dp"
-                        android:text="@string/app_name"
-                        android:textColor="@color/primary"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
             </LinearLayout>
+            <ImageView
+                android:id="@+id/close_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="-540dp"
+                app:srcCompat="@drawable/ic_baseline_close_24_grey" />
         </LinearLayout>
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/close_button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="top|right"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="-630dp"
-        app:srcCompat="@drawable/ic_baseline_close_24_grey" />
+
 
 </LinearLayout>

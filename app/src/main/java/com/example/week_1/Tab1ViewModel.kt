@@ -29,7 +29,7 @@ class Tab1ViewModel(
         val optionSort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " $sort"
 
         val cr = context?.contentResolver
-        val cur = cr?.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+        val cur = cr?.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, optionSort)
         val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
         val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
 
@@ -44,7 +44,7 @@ class Tab1ViewModel(
         }
 
         for (id in ids){
-            val nameCursor = cr?.query(phoneUri,arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME),ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " like ?",arrayOf(id),null)
+            val nameCursor = cr?.query(phoneUri,arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME),ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " like ?",arrayOf(id),optionSort)
             if (nameCursor != null){
                 val cursor = nameCursor
                 val nameColumn =
@@ -57,7 +57,7 @@ class Tab1ViewModel(
                 name = ""
             }
 
-            val phoneCursor = cr?.query(phoneUri,arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " like ?",arrayOf(id),null)
+            val phoneCursor = cr?.query(phoneUri,arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " like ?",arrayOf(id),optionSort)
             if (phoneCursor != null){
                 val cursor = phoneCursor
                 val numberColumn =

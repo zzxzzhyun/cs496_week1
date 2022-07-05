@@ -23,7 +23,7 @@ class PhoneAdapter(private var items: MutableList<ListViewItem>): BaseAdapter() 
 
         var img : ImageView? = convertView?.findViewById<ImageView>(R.id.list_img)
         var name : TextView? = convertView?.findViewById<TextView>(R.id.list_name)
-        var nickname : TextView? = convertView?.findViewById<TextView>(R.id.list_nickname)
+        var number : TextView? = convertView?.findViewById<TextView>(R.id.list_nickname)
 
 
         var item: ListViewItem = items[position]
@@ -33,15 +33,12 @@ class PhoneAdapter(private var items: MutableList<ListViewItem>): BaseAdapter() 
         }
         if (name != null) {
             if(item.name==""){
-                item.name = "No Name"
+                item.name = "이름없음"
             }
             name.setText(item.name)
         }
-        if (nickname != null) {
-            if(item.nickname==""){
-                item.nickname = "No Nickname"
-            }
-            nickname.setText(item.nickname)
+        if (number != null) {
+            number.setText(item.phone)
         }
 
         return convertView

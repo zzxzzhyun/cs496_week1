@@ -26,19 +26,19 @@ class AddContactsActivity : AppCompatActivity() {
 
         var createButtonName = findViewById(R.id.add_name) as EditText
         var createButtonNumber = findViewById(R.id.add_number) as EditText
-        var createButtonNickname = findViewById(R.id.add_nickname) as EditText
+        //var createButtonNickname = findViewById(R.id.add_nickname) as EditText
         var createButtonEmail = findViewById(R.id.add_email) as EditText
-        var createButtonFood = findViewById(R.id.add_food) as EditText
+        //var createButtonFood = findViewById(R.id.add_food) as EditText
         var createPhoneButton = findViewById(R.id.doneButton) as Button
 
         createPhoneButton.setOnClickListener {
             var name: String = createButtonName.text.toString()
             var phoneNumber: String = createButtonNumber.text.toString()
-            var nickname: String = createButtonNickname.text.toString()
+            //var nickname: String = createButtonNickname.text.toString()
             var email: String = createButtonEmail.text.toString()
-            var food: String = createButtonFood.text.toString()
+            //var food: String = createButtonFood.text.toString()
 
-            if (name == "" && phoneNumber == "" && nickname=="" && email=="" && food=="") {
+            if (name == "" && phoneNumber == "" && email=="") {
                 Toast.makeText(this, "항목을 입력해주세요", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_CANCELED)
                 finish()
@@ -83,7 +83,7 @@ class AddContactsActivity : AppCompatActivity() {
                     .withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
                 ops.add(op.build())
 
-
+/*
                 op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)// rawContact_NewID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE)
@@ -95,7 +95,7 @@ class AddContactsActivity : AppCompatActivity() {
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE)
                     .withValue(ContactsContract.CommonDataKinds.Note.NOTE, food)
                 ops.add(op.build())
-
+*/
 
                 this.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops)
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_LONG).show()

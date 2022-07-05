@@ -23,16 +23,16 @@ class PhoneNumberActivity : AppCompatActivity() {
         setContentView(R.layout.activity_phone_number)
 
         val name: TextView = findViewById(R.id.userNameDetail)
-        val nickname: TextView = findViewById(R.id.userNicknameDetail)
+        //val nickname: TextView = findViewById(R.id.userNicknameDetail)
         val phone: TextView = findViewById(R.id.userPhoneDetail)
         val email: TextView = findViewById(R.id.userEmailDetail)
-        val favorite: TextView = findViewById(R.id.userFavoriteDetail)
+        //val favorite: TextView = findViewById(R.id.userFavoriteDetail)
 
         name.text = intent.getStringExtra("Name")
         phone.text = intent.getStringExtra("Phone")
         email.text = intent.getStringExtra("Email")
-        nickname.text = intent.getStringExtra("Nickname")
-        favorite.text = intent.getStringExtra("Food")
+        //nickname.text = intent.getStringExtra("Nickname")
+       // favorite.text = intent.getStringExtra("Food")
 
         val backBtn : View = findViewById(R.id.close_button)
         backBtn.setOnClickListener(View.OnClickListener() {

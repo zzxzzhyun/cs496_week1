@@ -38,7 +38,7 @@ class AddContactsActivity : AppCompatActivity() {
             var email: String = createButtonEmail.text.toString()
             var food: String = createButtonFood.text.toString()
 
-            if (name == "" || phoneNumber == "" || nickname=="" || email=="" || food=="") {
+            if (name == "" && phoneNumber == "" && nickname=="" && email=="" && food=="") {
                 Toast.makeText(this, "항목을 입력해주세요", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_CANCELED)
                 finish()
@@ -101,7 +101,7 @@ class AddContactsActivity : AppCompatActivity() {
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_OK)
                 finish()
-                //onResume()
+                onResume()
             }
 
             val intent = Intent(this, MainActivity::class.java)

@@ -52,6 +52,7 @@
                     android:fontFamily="@font/robotolight"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/app_name" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -154,6 +155,13 @@
         </LinearLayout>
     </ScrollView>
 
-
+    <ImageView
+        android:id="@+id/close_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="top|right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-630dp"
+        app:srcCompat="@drawable/ic_baseline_close_24_grey" />
 
 </LinearLayout>

@@ -1,8 +1,10 @@
 package com.example.week_1
 
+import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -32,10 +34,15 @@ class PhoneNumberActivity : AppCompatActivity() {
         nickname.text = intent.getStringExtra("Nickname")
         favorite.text = intent.getStringExtra("Food")
 
+        val backBtn : View = findViewById(R.id.close_button)
+        backBtn.setOnClickListener(View.OnClickListener() {
+            val mIntent =
+                Intent(this, MainActivity::class.java)
+            this.startActivity(mIntent)
+            if(!isFinishing) finish()
+        })
+
     }
-
-
-
 
 
 }

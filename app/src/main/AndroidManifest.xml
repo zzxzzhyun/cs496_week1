@@ -25,15 +25,19 @@
             android:value="owreqayc65" />
         <activity
             android:name=".AddContactsActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".FoodActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".PhoneNumberActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

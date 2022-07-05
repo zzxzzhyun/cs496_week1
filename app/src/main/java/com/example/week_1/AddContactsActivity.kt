@@ -30,7 +30,7 @@ class AddContactsActivity : AppCompatActivity() {
         //var createButtonNickname = findViewById(R.id.add_nickname) as EditText
         var createButtonEmail = findViewById(R.id.add_email) as EditText
         //var createButtonFood = findViewById(R.id.add_food) as EditText
-        var createPhoneButton = findViewById(R.id.doneButton) as Button
+        var createPhoneButton = findViewById(R.id.doneButton) as TextView
 
         var cancelButton = findViewById(R.id.cancelButton) as TextView
 

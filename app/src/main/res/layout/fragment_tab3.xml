@@ -12,8 +12,10 @@
     app:umanoFadeColor="@android:color/transparent"
     app:umanoParallaxOffset="100dp"
     app:umanoPanelHeight="28dp"
-    app:umanoOverlay="true"
+    app:umanoOverlay="false"
     app:umanoScrollableView="@id/tab3ListView"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,7 +59,6 @@
                 android:id="@+id/idSV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:iconifiedByDefault="false"
                 android:padding="4dp"
                 android:queryHint="Search Restaurant" />
@@ -69,6 +70,7 @@
                 android:background="#FFFFFF"
                 android:drawSelectorOnTop="false">
             </ListView>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

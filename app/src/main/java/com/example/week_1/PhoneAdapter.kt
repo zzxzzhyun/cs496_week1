@@ -29,7 +29,7 @@ class PhoneAdapter(private var items: MutableList<ListViewItem>): BaseAdapter() 
         var item: ListViewItem = items[position]
 
         if(img != null) {
-            img.setImageResource(R.drawable.ic_baseline_people)
+            img.setImageResource(R.drawable.ic_baseline_person_24)
         }
         if (name != null) {
             if(item.name==""){

@@ -1,20 +1,24 @@
 package com.example.week_1
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.ListView
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.NestedScrollView
@@ -29,8 +33,9 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.sothree.slidinguppanel.PanelSlideListener
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ScrollableViewHelper
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
-import java.util.jar.Manifest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,7 +58,7 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     var selRes: String? = null
     var curLon: Double? = null
     var curLat: Double? = null
-    var tab3Clicked: Boolean = false
+    var keyBoardClosed: Boolean = false
 
     var array = mutableListOf<Restaurant>()
     var images = arrayOf(
@@ -81,6 +86,7 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
     lateinit var listView: ListView
+    lateinit var layout: View
     private lateinit var adapter : Tab3ListViewAdapter
 
     override fun onAttach(context: Context) {
@@ -97,17 +103,14 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             param2 = it.getString(ARG_PARAM2)
         }
         locationSource = FusedLocationSource(this, LOCATION_PERMISSTION_REQUEST_CODE)
-
         binding = FragmentTab3Binding.inflate(layoutInflater)
-
         mLocationRequest =  LocationRequest.create().apply {
-
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
         }
         startLocationUpdates()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -131,6 +134,7 @@ class Tab3 : Fragment(), OnMapReadyCallback {
             object : SearchView.OnQueryTextListener {
                 //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
                 override fun onQueryTextSubmit(s: String): Boolean {
+//                    hideKeyboard(view)
                     return false
                 }
 
@@ -143,31 +147,81 @@ class Tab3 : Fragment(), OnMapReadyCallback {
                     return false
                 }
             }
+
+        searchView.setOnClickListener {
+            hideKeyboard(searchView)
+            Log.d("clicked", "click")
+        }
+        searchView.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val inputMethodManager =
+                    mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+                inputMethodManager!!.hideSoftInputFromWindow(v!!.windowToken, 0)
+            } else {
+                hideKeyboard(searchView)
+                Log.d("clicked", "click")
+            }
+        })
+
+//        val touchInterceptor = root.findViewById(R.id.touchInterceptor) as FrameLayout
+//        touchInterceptor.setOnTouchListener { v, event ->
+//            if (event.action == MotionEvent.ACTION_DOWN) {
+//                if (searchView.isFocused()) {
+//                    val outRect = Rect()
+//                    searchView.getGlobalVisibleRect(outRect)
+//                    if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+//                        searchView.clearFocus()
+//                        val imm =
+//                            v.context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//                        imm.hideSoftInputFromWindow(v.windowToken, 0)
+//                    }
+//                }
+//            }
+//            false
+//        }
         searchView.setOnQueryTextListener(searchViewTextListener)
+        searchView.setFocusable(true)
+        searchView.setOnFocusChangeListener(object : View.OnFocusChangeListener {
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                if (hasFocus) {
+
+                } else {
+                    if( v != null) {
+                        hideKeyboard(v!!)
+                    }
+
+                }
+            }
+        }
+        )
 
         val slidePanel = binding.mainFrame                    // SlidingUpPanel
         slidePanel.addPanelSlideListener(PanelEventListener())
         slidePanel.setScrollableViewHelper(NestedScrollableViewHelper())
-//        val distance =  calDist(latitude, logitude, curLat!!, curLon!!)
-//        val dist: TextView = list.findViewById(R.id.distance)
-//        dist.setText("${dist} km")
 
         listView.setOnItemClickListener { parent, view, position, id ->
-            var state = slidePanel.panelState
-            var layout: View? = root.findViewById(R.id.slide_layout)
-            if (layout != null) {
-                layout.performClick()
-            }
-            val latitude = array[position].lat
-            val logitude = array[position].lon
+            hideKeyboard(view)
+            layout = root.findViewById(R.id.slide_layout)
+            val latitude = adapter.getItem(position).lat
+            val logitude = adapter.getItem(position).lon
             Log.d("Lat", latitude.toString())
             Log.d("Lon", logitude.toString())
             moveCam(latitude, logitude)
             marker.position = LatLng(latitude, logitude)
             marker.map = naverMap
-            marker.captionText = array[position].name
+            marker.captionText = adapter.getItem(position).name
+
+            layout.performClick()
+            layout.performClick()
         }
         return root
+    }
+
+    private fun hideKeyboard(view: View) {
+        if (view != null) {
+            val imm = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     inner class PanelEventListener : PanelSlideListener {
@@ -183,6 +237,7 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         ) {
             if (newState == PanelState.COLLAPSED) {
                 binding.mainFrame.isEnabled = false
+                Log.d("close", "Closed")
             } else if (newState == PanelState.EXPANDED) {
                 binding.mainFrame.isEnabled = true
             }
@@ -254,11 +309,9 @@ class Tab3 : Fragment(), OnMapReadyCallback {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-
         selLon = arguments?.getDouble("lon")
         selLat = arguments?.getDouble("lat")
         selRes = arguments?.getString("res")
-
         Log.d("lon", selLon.toString())
         Log.d("lat", selLat.toString())
         if(selRes != null) {
@@ -292,8 +345,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
         naverMap.addOnLocationChangeListener { location ->
             curLat = location.latitude
             curLon = location.longitude
-//            Toast.makeText(mainActivity, "${location.latitude}, ${location.longitude}",
-//                Toast.LENGTH_SHORT).show()
         }
 
         naverMap.onMapClickListener =
@@ -305,9 +356,6 @@ class Tab3 : Fragment(), OnMapReadyCallback {
                 Log.w("tag", "@@@@@@ latitude $latitude")
                 Log.w("tag", "@@@@@@ logitude $logitude")
             }
-
-//        val cameraUpdate = CameraUpdate.scrollTo(LatLng(36.2424, 126.9783881))
-//        naverMap.moveCamera(cameraUpdate)
 
         if (selLon != null && selLon!! > 1) {
             moveCam(selLat!!, selLon!!)

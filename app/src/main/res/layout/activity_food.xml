@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/foodthumbnail"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="480dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/transparent"
         android:scaleType="centerCrop"
@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_gravity="bottom"
             android:background="@drawable/topround"
             android:orientation="vertical">

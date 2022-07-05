@@ -22,7 +22,7 @@ class Tab3ListViewAdapter(private val items: MutableList<Restaurant>, private va
     }
     override fun getCount(): Int = filteredStores.size
 
-    override fun getItem(position: Int): Restaurant = items[position]
+    override fun getItem(position: Int): Restaurant = filteredStores[position]
 
     override fun getItemId(position: Int): Long = position.toLong()
 
@@ -30,7 +30,6 @@ class Tab3ListViewAdapter(private val items: MutableList<Restaurant>, private va
         var convertView = view
         if (convertView == null) convertView = LayoutInflater.from(parent?.context).inflate(R.layout.tab3_list_item, parent, false)
 
-        var img : ImageView? = convertView?.findViewById<ImageView>(R.id.imageView)
         var name : TextView? = convertView?.findViewById<TextView>(R.id.tab3_list_name)
         var category : TextView? = convertView?.findViewById<TextView>(R.id.tab3_list_category)
         var location: TextView? = convertView?.findViewById<TextView>(R.id.location)
@@ -38,9 +37,6 @@ class Tab3ListViewAdapter(private val items: MutableList<Restaurant>, private va
 
         var item: Restaurant = filteredStores[position]
 
-        if(img != null) {
-            img.setImageResource(item.pic[0])
-        }
         if (name != null) {
             name.setText(item.name)
         }
